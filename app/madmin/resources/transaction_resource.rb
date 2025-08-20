@@ -7,11 +7,12 @@ class TransactionResource < Madmin::Resource
   attribute :cost_rate, index: true
   attribute :amount, index: true
   attribute :total, index: true
+  attribute :profit, index: true
   attribute :created_at, form: false
   attribute :updated_at, form: false
 
   # Associations
-  attribute :customer, :select, collection: Customer.all.map { |customer| [ customer.name, customer.id ] }
+  attribute :customer
 
   # Add scopes to easily filter records
   # scope :published

@@ -6,7 +6,7 @@ class CreateTransactions < ActiveRecord::Migration[8.0]
       t.float :rate, default: 0.0, null: false
       t.float :cost_rate, default: 0.0, null: false
       t.float :amount, default: 0.0, null: false
-      t.integer :total, default: 0, null: false
+      t.float :total, default: 0.0, null: false
       t.references :customer, null: false, foreign_key: true
 
       t.timestamps
