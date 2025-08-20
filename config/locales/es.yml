@@ -1,0 +1,10 @@
+es:
+  activerecord:
+    models:
+      customer:
+        one: Cliente
+        other: Clientes
+    attributes:
+      customer:
+        first_name: Nombre
+        last_name: Apellido
