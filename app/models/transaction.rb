@@ -10,18 +10,29 @@ class Transaction < ApplicationRecord
     Money.new(total, target_currency)
   end
 
+  def display_profit
+    Money.new(profit, source_currency)
+  end
+
   def calculate_total
     (amount * rate)
   end
 
   def calculate_profit
-    ((rate - cost_rate) * amount)
+    # Ganancia en source_currency (CLP)
+    # Unidades de target_currency que se entregan
+    target_units = amount / rate
+    # Ganancia por unidad en source_currency
+    profit_per_unit = rate - cost_rate
+    # Ganancia total en source_currency
+    (profit_per_unit * target_units).round(2)
   end
 
   def profit_margin
-    return 0.0 if rate == 0
+    return 0.0 if rate == 0 || amount == 0
 
-    profit / rate * 100
+    # Porcentaje de ganancia sobre el monto total recibido
+    (calculate_profit / amount * 100).round(2)
   end
 
   private

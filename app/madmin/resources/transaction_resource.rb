@@ -3,11 +3,11 @@ class TransactionResource < Madmin::Resource
   attribute :id, form: false, index: true
   attribute :source_currency, :select, index: true, collection: Rails.application.config.available_currencies
   attribute :target_currency, :select, index: true, collection: Rails.application.config.available_currencies
-  attribute :rate, :string, index: true
-  attribute :cost_rate, :string, index: true
+  attribute :rate, field: DecimalField, index: true
+  attribute :cost_rate, field: DecimalField, index: true
   attribute :amount, field: CurrencyField, index: true
   attribute :total, field: CurrencyField, index: true
-  attribute :profit, index: true
+  attribute :profit, field: CurrencyField, index: true
   attribute :created_at, form: false
   attribute :updated_at, form: false
 

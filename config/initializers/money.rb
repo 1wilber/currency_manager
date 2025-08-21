@@ -126,7 +126,7 @@ Money::Currency.register({
 })
 
 Money::Currency.register({
-  iso_code: "VEF",
+  iso_code: "VES",
   name: "Venezuelan Bolívar",
   symbol: "Bs",
   subunit: "Centavo",

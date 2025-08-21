@@ -33,10 +33,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_20_230743) do
   create_table "transactions", force: :cascade do |t|
     t.string "source_currency", null: false
     t.string "target_currency", null: false
-    t.float "rate", default: 0.0, null: false
-    t.float "cost_rate", default: 0.0, null: false
-    t.float "amount", default: 0.0, null: false
-    t.float "total", default: 0.0, null: false
+    t.decimal "rate", precision: 10, scale: 2, default: "0.0", null: false
+    t.decimal "cost_rate", precision: 10, scale: 2, default: "0.0", null: false
+    t.integer "amount", default: 0, null: false
+    t.integer "total", default: 0, null: false
     t.bigint "customer_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
