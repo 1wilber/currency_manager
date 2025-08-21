@@ -2,6 +2,14 @@ class Transaction < ApplicationRecord
   belongs_to :customer
   before_save :set_total_and_profit
 
+  def display_amount
+    Money.new(amount, source_currency)
+  end
+
+  def display_total
+    Money.new(total, target_currency)
+  end
+
   def calculate_total
     (amount * rate)
   end
