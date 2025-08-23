@@ -1,4 +1,10 @@
 es:
+  created_at: Creado
+  updated_at: Actualizado
+  number:
+    format:
+      delimiter: ","
+      separator: "."
   activerecord:
     models:
       customer:
@@ -8,3 +14,11 @@ es:
       customer:
         first_name: Nombre
         last_name: Apellido
+      transaction:
+        source_currency: "De"
+        target_currency: "A"
+        rate: Tasa
+        cost_rate: Tasa Costo
+        amount: "Cantidad"
+        total: "Total"
+        profit: "Ganancia"

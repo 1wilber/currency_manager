@@ -2,7 +2,7 @@ class CurrencyField < Madmin::Field
   def value(record)
     currency_method = "display_#{attribute_name}"
     if record.respond_to?(currency_method)
-      record.public_send(currency_method).format
+      record.public_send(currency_method)
     else
       record.send(attribute_name)
     end

@@ -40,6 +40,5 @@ module CurrencyManager
     config.generators.system_tests = nil
     config.i18n.default_locale = :es
     config.i18n.available_locales = [ :es ]
-    config.importmap.paths << Madmin::Engine.root.join("config/importmap.rb")
   end
 end

@@ -1,1 +1,11 @@
-<%= form.text_field field.attribute_name, class: "form-input" %>
+<%= form.text_field field.attribute_name,
+                class: "form-input",
+                value:
+                  number_to_currency(
+                    record.send(field.attribute_name),
+                    unit: "",
+                    precision: 10,
+                  ).strip,
+                data: {
+                  controller: "number-input",
+                } %>

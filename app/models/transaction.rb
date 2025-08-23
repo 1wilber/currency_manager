@@ -1,17 +1,30 @@
 class Transaction < ApplicationRecord
+  has_currency_fields :amount, :total, :profit, :rate, :cost_rate
   belongs_to :customer
   before_save :set_total_and_profit
 
+  with_options presence: true do
+    validates :source_currency, :target_currency
+  end
+
+  def display_rate
+    "1 #{source_currency} = #{rate} #{target_currency}"
+  end
+
+  def display_cost_rate
+    "1 #{source_currency} = #{cost_rate} #{target_currency}"
+  end
+
   def display_amount
-    Money.new(amount, source_currency)
+    Money.new(amount * multiplier, source_currency).format
   end
 
   def display_total
-    Money.new(total, target_currency)
+    Money.new(total * multiplier, target_currency).format
   end
 
   def display_profit
-    Money.new(profit, source_currency)
+    Money.new(profit * multiplier, source_currency).format
   end
 
   def calculate_total
@@ -19,13 +32,13 @@ class Transaction < ApplicationRecord
   end
 
   def calculate_profit
-    # Ganancia en source_currency (CLP)
-    # Unidades de target_currency que se entregan
-    target_units = amount / rate
-    # Ganancia por unidad en source_currency
-    profit_per_unit = rate - cost_rate
-    # Ganancia total en source_currency
-    (profit_per_unit * target_units).round(2)
+    # target_units = amount / rate
+    # profit_per_unit = rate - cost_rate
+    # (profit_per_unit * target_units).round(2)
+    cost_total = (amount * cost_rate)
+    total = calculate_total
+
+    ((cost_total - total) / rate).round(2)
   end
 
   def profit_margin
@@ -36,6 +49,9 @@ class Transaction < ApplicationRecord
   end
 
   private
+  def multiplier
+    [ "CLP", "VES" ].include?(source_currency) ? 100 : 1
+  end
 
   def set_total_and_profit
     self.total = calculate_total

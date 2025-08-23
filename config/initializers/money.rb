@@ -117,9 +117,9 @@ Money::Currency.register({
   priority: 1,
   iso_code: "CLP",
   name: "Chilean Peso",
-  symbol: "$",
+  symbol: "CLP",
   subunit: "Centavo",
-  subunit_to_unit: 1,
+  subunit_to_unit: 100,
   separator: ".",
   delimiter: ",",
   format: "%n %u"
@@ -128,9 +128,9 @@ Money::Currency.register({
 Money::Currency.register({
   iso_code: "VES",
   name: "Venezuelan Bolívar",
-  symbol: "Bs",
+  symbol: "VES",
   subunit: "Centavo",
-  subunit_to_unit: 1,
+  subunit_to_unit: 100,
   separator: ".",
   delimiter: ",",
   format: "%n %u"
