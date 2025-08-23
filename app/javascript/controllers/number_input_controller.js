@@ -20,6 +20,7 @@ export default class extends Controller {
         mapToRadix: [".", ","],
       },
     };
+
     const currentLng = document.documentElement.lang || "es";
     const currentConfig = config[currentLng];
 

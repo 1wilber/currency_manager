@@ -7,6 +7,10 @@ class Transaction < ApplicationRecord
     validates :source_currency, :target_currency
   end
 
+  def display_profit_margin
+    "#{(profit_margin.round(4)) * 100}%"
+  end
+
   def display_rate
     "1 #{source_currency} = #{rate} #{target_currency}"
   end
@@ -45,7 +49,7 @@ class Transaction < ApplicationRecord
     return 0.0 if rate == 0 || amount == 0
 
     # Porcentaje de ganancia sobre el monto total recibido
-    (calculate_profit / amount * 100).round(2)
+    (calculate_profit / amount)
   end
 
   private

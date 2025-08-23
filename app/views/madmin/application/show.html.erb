@@ -12,27 +12,46 @@
       <%= instance_exec(@record, &action) %>
     <% end %>
     <%= link_to "Edit", resource.edit_path(@record), class: "btn btn-secondary" %>
-    <%= button_to "Delete", resource.show_path(@record), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "btn btn-danger" %>
+    <%= button_to "Delete",
+    resource.show_path(@record),
+    method: :delete,
+    data: {
+      turbo_confirm: "Are you sure?",
+    },
+    class: "btn btn-danger" %>
   </div>
 </header>
 
 <div class="table-scroll">
   <table>
     <tbody>
-    <% resource.attributes.values.each do |attribute| %>
-      <% next if attribute.field.nil? %>
-      <% next unless attribute.field.visible?(action_name) %>
+      <% resource.attributes.values.each do |attribute| %>
+        <% next if attribute.field.nil? %>
+        <% next unless attribute.field.visible?(action_name) %>
 
-      <tr>
-        <th class="label">
-          <%= attribute.field.options.label || attribute.name.to_s.titleize %>
-        </th>
+        <tr>
+          <th class="label">
 
-        <td>
-          <%= render partial: attribute.field.to_partial_path("show"), locals: { field: attribute.field, record: @record, resource: resource } %>
-        </td>
-      </tr>
-    <% end %>
+            <% if attribute.name == :created_at %>
+              <%= t("created_at") %>
+            <% elsif attribute.name == :updated_at %>
+              <%= t("updated_at") %>
+            <% else %>
+              <%= attribute.field.options.label ||
+                resource.model.human_attribute_name(attribute.name) %>
+            <% end %>
+          </th>
+
+          <td>
+            <%= render partial: attribute.field.to_partial_path("show"),
+            locals: {
+              field: attribute.field,
+              record: @record,
+              resource: resource,
+            } %>
+          </td>
+        </tr>
+      <% end %>
     </tbody>
   </table>
 </div>

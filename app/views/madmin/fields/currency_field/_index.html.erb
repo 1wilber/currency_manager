@@ -1,1 +1,8 @@
-<%= field.value(record) %>
+<p>
+  <%= field.value(record) %>
+  <% if record.respond_to?(:display_profit_margin) && field.attribute_name == :profit %>
+    <sub
+      style="vertical-align: top; color: <%= record.profit_margin.positive? ? :green : :red %>"
+    ><%= record.display_profit_margin %></sub>
+  <% end %>
+</p>
