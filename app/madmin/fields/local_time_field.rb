@@ -1,11 +1,12 @@
 class LocalTimeField < Madmin::Field
   include ActionView::Helpers::DateHelper
-  # def value(record)
-  #   record.public_send(attribute_name)
-  # end
 
   def display(record)
-    time_ago_in_words(value(record))
+    if attribute_name == :created_at
+      I18n.l(record.public_send(attribute_name), format: :short)
+    else
+      time_ago_in_words(value(record))
+    end
   end
 
   # def to_partial_path(name)
