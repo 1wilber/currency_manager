@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_23_190808) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_27_005329) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -48,7 +48,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_23_190808) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.float "profit", default: 0.0
+    t.string "sender_type", null: false
+    t.bigint "sender_id", null: false
+    t.string "receiver_type", null: false
+    t.bigint "receiver_id", null: false
     t.index ["customer_id"], name: "index_transactions_on_customer_id"
+    t.index ["receiver_type", "receiver_id"], name: "index_transactions_on_receiver"
+    t.index ["sender_type", "sender_id"], name: "index_transactions_on_sender"
   end
 
   create_table "users", force: :cascade do |t|

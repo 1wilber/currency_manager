@@ -1,6 +1,9 @@
 class Transaction < ApplicationRecord
   has_currency_fields :amount, :total, :profit, :rate, :cost_rate
   belongs_to :customer
+  belongs_to :sender, polymorphic: true
+  belongs_to :receiver, polymorphic: true
+
   before_save :set_total_and_profit
 
   with_options presence: true do
