@@ -1,0 +1,92 @@
+<%= form_with model: [:madmin, record], url: (record.persisted? ? resource.show_path(record) : resource.index_path), local: true do |form| %>
+  <% if form.object.errors.any? %>
+    <div class="alert alert-danger">
+      <div class="">There was
+        <%= pluralize form.object.errors.full_messages.count, "error" %>
+        with your submission:</div>
+
+      <ul>
+        <% form.object.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.hidden_field :sender_type, value: "Bank" %>
+    <%= form.label :sender_id %>
+    <%= form.select :sender_id,
+                options_for_select(Bank.order(name: :asc).pluck(:name, :id)),
+                { prompt: true },
+                { data: { controller: "select" } } %>
+  </div>
+
+  <div class="form-group">
+    <%= form.hidden_field :receiver_type, value: "Customer" %>
+    <%= form.label :receiver_id %>
+    <%= form.select :receiver_id,
+                options_for_select(
+                  Customer
+                    .all
+                    .sort_by(&:name)
+                    .map { |customer| [customer.name, customer.id] },
+                ),
+                { prompt: true },
+                { data: { controller: "select" } } %>
+  </div>
+
+  <div class="form-group-currency">
+    <div class="form-group">
+      <%= form.label :amount %>
+      <%= form.text_field :amount,
+                      class: "form-input",
+                      value:
+                        number_to_currency(
+                          record.send(:amount),
+                          unit: "",
+                          precision: 10,
+                        ).strip,
+                      data: {
+                        controller: "number-input",
+                      } %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :source_currency %>
+      <%= form.select :source_currency,
+                  Rails.application.config.available_currencies,
+                  { prompt: true },
+                  { data: { controller: "select" }, class: "form-input" } %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :target_currency %>
+      <%= form.select :target_currency,
+                  Rails.application.config.available_currencies,
+                  { prompt: true },
+                  { data: { controller: "select" }, class: "form-input" } %>
+    </div>
+  </div>
+  <% resource.attributes.values.select{ _1.field.present? && _1.field.visible?(action_name) }.each do |attribute| %>
+    <% next if [:source_currency, :target_currency, :rate, :amount].include?(attribute.field.attribute_name) %>
+    <div class="form-group">
+      <%= render "madmin/shared/label", form: form, field: attribute.field %>
+      <%= render partial: attribute.field.to_partial_path("form"),
+      locals: {
+        field: attribute.field,
+        record: record,
+        form: form,
+        resource: resource,
+      } %>
+      <%= if attribute.field.options.description.present?
+        tag.div attribute.field.options.description, class: "form-description"
+      end %>
+    </div>
+  <% end %>
+
+  <%= form.submit class: "btn btn-primary" %>
+  <%= link_to "Cancel",
+  (record.persisted? ? resource.show_path(record) : resource.index_path),
+  class: "btn" %>
+<% end %>

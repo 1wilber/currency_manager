@@ -8,3 +8,11 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+body {
+}
+
+.form-group-currency {
+    display: flex;
+    gap: 0.5rem;
+}

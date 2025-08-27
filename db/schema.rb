@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_27_005329) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_27_015122) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -44,7 +44,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_27_005329) do
     t.decimal "cost_rate", precision: 18, scale: 10, default: "0.0", null: false
     t.integer "amount", default: 0, null: false
     t.integer "total", default: 0, null: false
-    t.bigint "customer_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.float "profit", default: 0.0
@@ -52,7 +51,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_27_005329) do
     t.bigint "sender_id", null: false
     t.string "receiver_type", null: false
     t.bigint "receiver_id", null: false
-    t.index ["customer_id"], name: "index_transactions_on_customer_id"
     t.index ["receiver_type", "receiver_id"], name: "index_transactions_on_receiver"
     t.index ["sender_type", "sender_id"], name: "index_transactions_on_sender"
   end
@@ -68,5 +66,4 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_27_005329) do
   end
 
   add_foreign_key "sessions", "users"
-  add_foreign_key "transactions", "customers"
 end
