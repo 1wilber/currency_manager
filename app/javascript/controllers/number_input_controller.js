@@ -24,11 +24,15 @@ export default class extends Controller {
     const currentLng = document.documentElement.lang || "es";
     const currentConfig = config[currentLng];
 
-    IMask(this.element, {
+    const mask = IMask(this.element, {
       mask: Number,
       scale: 0,
-      min: 0,
+      min: -999999,
       ...currentConfig,
+    });
+
+    this.element.addEventListener("number-input:changed", (event) => {
+      mask.value = event.detail;
     });
   }
 }

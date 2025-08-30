@@ -34,7 +34,7 @@ class Transaction < ApplicationRecord
   end
 
   def calculate_total
-    (amount * rate)
+    self.total = (amount * rate)
   end
 
   def calculate_profit
@@ -44,7 +44,8 @@ class Transaction < ApplicationRecord
     cost_total = (amount * cost_rate)
     total = calculate_total
 
-    ((cost_total - total) / rate).round(2)
+    result = ((cost_total - total) / rate).round(2)
+    self.profit = result.nan? ? 0 : result
   end
 
   def profit_margin
@@ -55,12 +56,13 @@ class Transaction < ApplicationRecord
   end
 
   private
+
   def multiplier
     [ "CLP", "VES" ].include?(source_currency) ? 100 : 1
   end
 
   def set_total_and_profit
-    self.total = calculate_total
-    self.profit = calculate_profit
+    calculate_total
+    calculate_profit
   end
 end

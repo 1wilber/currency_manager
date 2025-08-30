@@ -1,4 +1,5 @@
-<%= form_with model: [:madmin, record], url: (record.persisted? ? resource.show_path(record) : resource.index_path), local: true do |form| %>
+<%= form_with model: [:madmin, record], url: (record.persisted? ? resource.show_path(record) : resource.index_path),
+  local: true, html: {data: {controller: "transaction-form"}} do |form| %>
   <% if form.object.errors.any? %>
     <div class="alert alert-danger">
       <div class="">There was
@@ -23,14 +24,11 @@
       <%= form.label :amount %>
       <%= form.text_field :amount,
                       class: "form-input",
-                      value:
-                        number_to_currency(
-                          record.send(:amount),
-                          unit: "",
-                          precision: 10,
-                        ).strip,
+                      value: money_value(record.send(:amount)),
                       data: {
+                        transaction_form_target: "amount",
                         controller: "number-input",
+                        action: "transaction-form#calculate",
                       } %>
     </div>
 
@@ -51,7 +49,8 @@
     </div>
   </div>
   <% resource.attributes.values.select{ _1.field.present? && _1.field.visible?(action_name) }.each do |attribute| %>
-    <% next if [:source_currency, :target_currency, :amount, :sender_type, :receiver_type].include?(attribute.field.attribute_name) %>
+    <% next if [:source_currency, :target_currency, :amount, :sender_type, :receiver_type ].include?(attribute.field.attribute_name) %>
+
     <div class="form-group">
       <%= render "madmin/shared/label", form: form, field: attribute.field %>
       <%= render partial: attribute.field.to_partial_path("form"),
@@ -65,6 +64,10 @@
         tag.div attribute.field.options.description, class: "form-description"
       end %>
     </div>
+  <% end %>
+
+  <%= turbo_frame_tag dom_id(record, :totals), data: {transaction_form_frame_target: "summary"} do %>
+    <%= render "summary", form: %>
   <% end %>
 
   <%= form.submit class: "btn btn-primary" %>
