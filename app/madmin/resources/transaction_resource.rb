@@ -1,18 +1,24 @@
 class TransactionResource < Madmin::Resource
+  include Madmin::ResourceOverrides
   # Attributes
   attribute :id, form: false, index: true
+  # Associations
+  attribute :sender_id, :select, form: true, collection: Bank.pluck(:name, :id)
+  attribute :receiver_id, :select, form: true, collection: Customer.all.map { |customer| [ customer.name, customer.id ] }
+  attribute :sender_type
+  attribute :receiver_type
+
   attribute :source_currency, :select, collection: Rails.application.config.available_currencies, show: false
   attribute :target_currency, :select, collection: Rails.application.config.available_currencies, show: false
+
   attribute :rate, field: CurrencyField, index: true
   attribute :cost_rate, field: CurrencyField, index: true
   attribute :amount, field: CurrencyField, index: true
-  attribute :total, field: CurrencyField, index: true
-  attribute :profit, field: CurrencyField, index: true
+  attribute :total, field: CurrencyField, index: true, form: false
+  attribute :profit, field: CurrencyField, index: true, form: false
   attribute :created_at, field: LocalTimeField, form: false, index: true
-  attribute :updated_at, field: LocalTimeField, form: false, index: true
+  attribute :updated_at, field: LocalTimeField, form: false
 
-  # Associations
-  attribute :customer
 
   # Add scopes to easily filter records
   # scope :published

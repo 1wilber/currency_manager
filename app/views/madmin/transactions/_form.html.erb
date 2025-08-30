@@ -15,25 +15,7 @@
 
   <div class="form-group">
     <%= form.hidden_field :sender_type, value: "Bank" %>
-    <%= form.label :sender_id %>
-    <%= form.select :sender_id,
-                options_for_select(Bank.order(name: :asc).pluck(:name, :id)),
-                { prompt: true },
-                { data: { controller: "select" } } %>
-  </div>
-
-  <div class="form-group">
     <%= form.hidden_field :receiver_type, value: "Customer" %>
-    <%= form.label :receiver_id %>
-    <%= form.select :receiver_id,
-                options_for_select(
-                  Customer
-                    .all
-                    .sort_by(&:name)
-                    .map { |customer| [customer.name, customer.id] },
-                ),
-                { prompt: true },
-                { data: { controller: "select" } } %>
   </div>
 
   <div class="form-group-currency">
@@ -69,7 +51,7 @@
     </div>
   </div>
   <% resource.attributes.values.select{ _1.field.present? && _1.field.visible?(action_name) }.each do |attribute| %>
-    <% next if [:source_currency, :target_currency, :rate, :amount].include?(attribute.field.attribute_name) %>
+    <% next if [:source_currency, :target_currency, :amount, :sender_type, :receiver_type].include?(attribute.field.attribute_name) %>
     <div class="form-group">
       <%= render "madmin/shared/label", form: form, field: attribute.field %>
       <%= render partial: attribute.field.to_partial_path("form"),

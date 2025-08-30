@@ -1,4 +1,6 @@
 class BankResource < Madmin::Resource
+  include Madmin::ResourceOverrides
+
   # Attributes
   attribute :id, form: false
   attribute :name

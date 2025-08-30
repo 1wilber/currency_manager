@@ -1,4 +1,10 @@
 es:
+  madmin:
+    new: Crear
+    view: Ver
+    edit: Editar
+    all: Todos
+    search: Buscar
   created_at: Creado
   updated_at: Actualizado
   number:
@@ -7,6 +13,12 @@ es:
       separator: "."
   activerecord:
     models:
+      bank:
+        one: Banco
+        other: Bancos
+      transaction:
+        one: Transacción
+        other: Transacciones
       customer:
         one: Cliente
         other: Clientes

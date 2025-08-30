@@ -1,4 +1,5 @@
 class CustomerResource < Madmin::Resource
+  include Madmin::ResourceOverrides
   # Attributes
   attribute :id, form: false
   attribute :first_name, index: true
