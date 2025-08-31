@@ -2,6 +2,7 @@ es:
   pundit:
     not_authorized: "No estás autorizado para hacer eso."
   madmin:
+    loading: Cargando...
     new: Crear
     view: Ver
     edit: Editar

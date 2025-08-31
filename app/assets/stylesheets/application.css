@@ -9,10 +9,26 @@
  * Consider organizing styles into separate files for maintainability.
  */
 
-body {
+@import "overlay.css";
+.form-group-currency {
+  display: flex;
+  gap: 0.5rem;
 }
 
-.form-group-currency {
-    display: flex;
-    gap: 0.5rem;
+.spinner {
+  width: 75px;
+  height: 75px;
+  display: block;
+  border-width: 2px;
+  border-color: rgba(255, 255, 255, 0.05);
+  border-top-color: #020617;
+  animation: spin 700ms infinite linear;
+  border-radius: 100%;
+  border-style: solid;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
 }

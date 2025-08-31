@@ -3,7 +3,7 @@ class TransactionResource < Madmin::Resource
   # Attributes
   attribute :id, form: false, index: true
   # Associations
-  attribute :sender_id, :select, form: true, collection: Bank.pluck(:name, :id)
+  attribute :sender_id, :select, form: true, collection: Bank.all.map { |bank| [ bank.display_name, bank.id ] }
   attribute :receiver_id, :select, form: true, collection: Customer.all.map { |customer| [ customer.name, customer.id ] }
   attribute :sender_type
   attribute :receiver_type

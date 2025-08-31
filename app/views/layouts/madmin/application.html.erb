@@ -14,6 +14,7 @@
     <%= render "javascript" %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
   </head>
+
   <body class="<%= controller_name %> <%= action_name %>" data-controller="mobile-nav">
     <header>
       <%= render "flash" %>
@@ -27,7 +28,14 @@
       </div>
     </header>
 
-    <main>
+    <main id="content" data-controller="app">
+      <div id="overlay" class="overlay">
+        <div class="overlay__content">
+          <span class="spinner"></span>
+          <p><%= t("madmin.loading") %></p>
+        </div>
+      </div>
+
       <aside id="sidebar" data-mobile-nav-target="menu">
         <%= render "navigation" %>
       </aside>
