@@ -4,6 +4,7 @@ class BankResource < Madmin::Resource
   # Attributes
   attribute :id, form: false
   attribute :name
+  attribute :currency, :select, collection: Rails.application.config.available_currencies
   attribute :created_at, form: false
   attribute :updated_at, form: false
 
