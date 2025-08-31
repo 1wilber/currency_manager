@@ -64,3 +64,5 @@ gem "name_of_person", "~> 1.1"
 gem "rails-i18n", "~> 8.0"
 
 gem "money-rails", "~> 1.15"
+
+gem "pundit", "~> 2.5"

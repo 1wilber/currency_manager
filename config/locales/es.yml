@@ -1,4 +1,6 @@
 es:
+  pundit:
+    not_authorized: "No estás autorizado para hacer eso."
   madmin:
     new: Crear
     view: Ver
