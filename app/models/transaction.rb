@@ -3,6 +3,11 @@ class Transaction < ApplicationRecord
   belongs_to :sender, polymorphic: true
   belongs_to :receiver, polymorphic: true
 
+  scope :by_created_at, ->(date) do
+    time = date.to_date
+    where(created_at: time.beginning_of_day..time.end_of_day)
+  end
+
   before_save :set_total_and_profit
 
   with_options presence: true do

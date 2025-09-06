@@ -1,8 +1,11 @@
 class TransactionsController < ApplicationController
   before_action :set_sender, :set_receiver, only: [ :new, :edit ]
+  has_scope :by_created_at, only: [ :index ]
 
   def index
-    @collection = Transaction.all.order(id: :desc)
+    params[:by_created_at] ||= Time.zone.now.strftime("%Y-%m-%d")
+
+    @collection = apply_scopes(Transaction).order(id: :desc)
   end
 
   def create

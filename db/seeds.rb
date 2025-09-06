@@ -8,3 +8,15 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 User.create!(first_name: "Don", last_name: "Garcia", email_address: "admin@example.com", password: "password")
+
+path = "/home/wilber/Documents/cdp"
+folders = Dir.entries(path).reject { |entry| entry.start_with?('.') }.sort
+
+folders.each do |folder|
+  file_paths = Dir.entries("#{path}/#{folder}").reject { |entry| entry.start_with?('.') || !entry.include?('-') }.sort
+  file_paths.each do |file_path|
+    file_path =  "#{path}/#{folder}/#{file_path}"
+    puts "[CdpImporter] importando #{file_path}..."
+    Importers::CdpImporter.call(file_path:)
+  end
+end

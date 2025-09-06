@@ -66,3 +66,9 @@ gem "rails-i18n", "~> 8.0"
 gem "money-rails", "~> 1.15"
 
 gem "pundit", "~> 2.5"
+
+gem "interactor-rails", "~> 2.3"
+
+gem "roo", "~> 2.10"
+
+gem "has_scope", "~> 0.8.2"
