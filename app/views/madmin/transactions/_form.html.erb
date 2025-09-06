@@ -1,26 +1,27 @@
-<%= form_with model: [:madmin, record], url: (record.persisted? ? resource.show_path(record) : resource.index_path),
-  local: true, html: {data: {controller: "transaction-form"}} do |form| %>
-  <% if form.object.errors.any? %>
-    <div class="alert alert-danger">
-      <div class="">There was
-        <%= pluralize form.object.errors.full_messages.count, "error" %>
-        with your submission:</div>
+<%= form_with model: [:madmin, record], url: new_madmin_transaction_path, method: :get, html: {data: {controller: "auto-submit transaction-form"}} do |form| %>
+  <div class="form-group">
+    <%= form.hidden_field :sender_type, value: "Bank" %>
+    <%= form.label :sender_id %>
+    <%= form.select :sender_id,
+                Bank.all.map { |bank| [bank.display_name, bank.id] },
+                { prompt: true },
+                { data: { controller: "select", action: "auto-submit#submit" } } %>
+  </div>
+<% end %>
 
-      <ul>
-        <% form.object.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
+<%= form_with model: [:madmin, record], url: (record.persisted? ? resource.show_path(record) : resource.index_path), local: true, html: {data: {controller: " transaction-form"}} do |form| %>
+  <% if form.object.errors.any? %>
+    <%= render "shared/form_errors", form: %>
   <% end %>
 
   <div class="form-group">
-    <%= form.hidden_field :sender_type, value: "Bank" %>
+    <%= form.hidden_field :sender_type, value: @sender.class.name %>
+    <%= form.hidden_field :sender_id, value: @sender.try(:id) %>
     <%= form.hidden_field :receiver_type, value: "Customer" %>
   </div>
 
   <% resource.attributes.values.select{ _1.field.present? && _1.field.visible?(action_name) }.each do |attribute| %>
-    <% next if [:source_currency, :target_currency, :amount, :sender_type, :receiver_type ].include?(attribute.field.attribute_name) %>
+    <% next if [:source_currency, :target_currency, :amount, :sender_type, :receiver_type, :sender_id ].include?(attribute.field.attribute_name) %>
 
     <div class="form-group">
       <%= render "madmin/shared/label", form: form, field: attribute.field %>
@@ -59,11 +60,19 @@
     </div>
 
     <div class="form-group">
+      <% target_currency = form.object.target_currency || @sender.try(:currency) %>
+      <%= form.hidden_field :target_currency, value: target_currency %>
       <%= form.label :target_currency %>
       <%= form.select :target_currency,
-                  Rails.application.config.available_currencies,
-                  { prompt: true },
-                  { data: { controller: "select" }, class: "form-input" } %>
+                  [target_currency],
+                  { prompt: true, selected: target_currency },
+                  {
+                    disabled: true,
+                    data: {
+                      controller: "select",
+                    },
+                    class: "form-input",
+                  } %>
     </div>
   </div>
 

@@ -8,27 +8,127 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+/* montserrat-latin-wght-normal */
+@font-face {
+    font-family: "Montserrat Variable";
+    font-style: normal;
+    font-display: swap;
+    font-weight: 100 900;
+    src: url(https://cdn.jsdelivr.net/fontsource/fonts/montserrat:vf@latest/latin-wght-normal.woff2)
+        format("woff2-variations");
+    unicode-range:
+        U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+        U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+        U+2212, U+2215, U+FEFF, U+FFFD;
+}
 
-@import "overlay.css";
+p {
+    margin: 0;
+}
+
+html {
+    font-family: "Montserrat Variable", sans-serif;
+}
+
+:root {
+    --light-text-color: #6a7282;
+    --text-color: #101828;
+}
+
 .form-group-currency {
-  display: flex;
-  gap: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.form-input-transparent {
+    background-color: transparent;
+    box-shadow: none;
+    width: -webkit-fill-available;
+    padding: 0;
+}
+
+.form-input-transparent:focus {
+    box-shadow: none;
+    border: none;
+    outline: none;
 }
 
 .spinner {
-  width: 75px;
-  height: 75px;
-  display: block;
-  border-width: 2px;
-  border-color: rgba(255, 255, 255, 0.05);
-  border-top-color: #020617;
-  animation: spin 700ms infinite linear;
-  border-radius: 100%;
-  border-style: solid;
+    width: 75px;
+    height: 75px;
+    display: block;
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 0.05);
+    border-top-color: #020617;
+    animation: spin 700ms infinite linear;
+    border-radius: 100%;
+    border-style: solid;
 }
 
 @keyframes spin {
-  100% {
-    transform: rotate(360deg);
-  }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Overlay */
+.overlay {
+    left: 0;
+    top: 0;
+    width: -webkit-fill-available;
+    height: 100%;
+    position: absolute;
+    background: #f1f5f9;
+    opacity: 0.5;
+    visibility: hidden;
+    z-index: 100;
+    animation: visibility 0.5s ease-in-out forwards;
+}
+.overlay.overlay--visible {
+    visibility: visible;
+}
+
+.overlay__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: inherit;
+}
+
+@media (min-width: 768px) {
+    .overlay {
+        left: var(--sidebar-width);
+    }
+}
+
+/*Summary*/
+
+.summary {
+    margin: 0;
+    padding: 0;
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+.summary li {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+/*Typography*/
+
+.text-muted {
+    color: var(--light-text-color);
+}
+
+.text-right {
+    text-align: right;
+}
+
+hr {
+    border-color: #e2e8f0;
 }

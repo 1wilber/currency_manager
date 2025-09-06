@@ -119,7 +119,7 @@ Money::Currency.register({
   name: "Chilean Peso",
   symbol: "CLP",
   subunit: "Centavo",
-  subunit_to_unit: 100,
+  subunit_to_unit: 1,
   separator: ".",
   delimiter: ",",
   format: "%n %u"
@@ -130,7 +130,7 @@ Money::Currency.register({
   name: "Venezuelan Bolívar",
   symbol: "VES",
   subunit: "Centavo",
-  subunit_to_unit: 100,
+  subunit_to_unit: 1,
   separator: ".",
   delimiter: ",",
   format: "%n %u"

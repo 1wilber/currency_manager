@@ -22,15 +22,15 @@ class Transaction < ApplicationRecord
   end
 
   def display_amount
-    Money.new(amount * multiplier, source_currency).format
+    Money.new(amount, source_currency).format
   end
 
   def display_total
-    Money.new(total * multiplier, target_currency).format
+    Money.new(total, target_currency).format
   end
 
   def display_profit
-    Money.new(profit * multiplier, source_currency).format
+    Money.new(profit, source_currency).format
   end
 
   def calculate_total
@@ -42,7 +42,7 @@ class Transaction < ApplicationRecord
     # profit_per_unit = rate - cost_rate
     # (profit_per_unit * target_units).round(2)
     cost_total = (amount * cost_rate)
-    total = calculate_total
+    calculate_total
 
     result = ((cost_total - total) / rate).round(2)
     self.profit = result.nan? ? 0 : result
@@ -56,10 +56,6 @@ class Transaction < ApplicationRecord
   end
 
   private
-
-  def multiplier
-    [ "CLP", "VES" ].include?(source_currency) ? 100 : 1
-  end
 
   def set_total_and_profit
     calculate_total

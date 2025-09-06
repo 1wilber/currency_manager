@@ -1,27 +1,33 @@
-<section class="metrics">
-  <article class="metric">
-    <h4>
+<ul class="summary">
+  <li>
+    <p class="text-muted">
       <%= Transaction.human_attribute_name(:profit) %>
-    </h4>
+    </p>
     <p>
       <%= form.text_field :profit,
                       value: money_value(form.object.profit),
+                      class: "form-input-transparent text-right",
+                      readonly: true,
                       data: {
                         transaction_form_target: "profit",
                         controller: "number-input",
                       } %>
     </p>
-  </article>
-
-  <article class="metric">
-    <h4><%= Transaction.human_attribute_name(:total) %></h4>
+  </li>
+  <hr>
+  <li>
+    <p class="text-muted">
+      <%= Transaction.human_attribute_name(:total) %>
+    </p>
     <p>
       <%= form.text_field :total,
                       value: money_value(form.object.total),
+                      class: "form-input-transparent text-right",
+                      readonly: true,
                       data: {
                         transaction_form_target: "total",
                         controller: "number-input",
                       } %>
     </p>
-  </article>
-</section>
+  </li>
+</ul>

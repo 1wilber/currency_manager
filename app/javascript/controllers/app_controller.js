@@ -3,6 +3,7 @@ import { Controller } from "@hotwired/stimulus";
 // Connects to data-controller="app"
 export default class extends Controller {
   connect() {
+    document.addEventListener("turbo:submit-start", this.showOverlay);
     document.addEventListener("turbo:before-visit", this.showOverlay);
   }
 

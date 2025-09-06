@@ -6,6 +6,8 @@ module Madmin
     helper_method :money_value
 
     skip_before_action :set_record, only: [ :calculate ]
+    before_action :set_sender, only: [ :new ]
+
     def calculate
       amount = params.dig(:amount) || 0
       rate = params.dig(:rate) || 0
@@ -17,6 +19,10 @@ module Madmin
         @transaction.calculate_profit
         @transaction.calculate_total
       end
+
+      puts @transaction.slice(:rate, :cost_rate, :amount, :total, :profit).as_json
+      puts
+      puts
 
       result = {
         amount: money_as_value(@transaction.amount),
@@ -31,6 +37,19 @@ module Madmin
 
     def money_value(arg)
       money_as_value(arg)
+    end
+
+    private
+
+    def sender_id
+      resource_params.dig(:sender_id)
+    end
+
+    def set_sender
+      return if (resource_params rescue {}).blank?
+      return if resource_params.dig(:sender_id).blank?
+
+      @sender = resource_params.dig(:sender_type).constantize.find(sender_id)
     end
   end
 end
