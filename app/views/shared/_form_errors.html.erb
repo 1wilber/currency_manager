@@ -1,11 +1,10 @@
-<% if form.object.errors.any? %>
+<% errors ||= [] %>
+<% if errors.any? %>
   <div class="alert alert-danger">
-    <div>There was
-      <%= pluralize form.object.errors.full_messages.count, "error" %>
-      with your submission:</div>
-
+    <div>Hay errores:
+    </div>
     <ul>
-      <% form.object.errors.full_messages.each do |message| %>
+      <% errors.each do |message| %>
         <li><%= message %></li>
       <% end %>
     </ul>

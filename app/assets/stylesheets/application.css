@@ -37,7 +37,12 @@
     }
 }
 
+.grid.grid--2-cols {
+    grid-template-columns: repeat(2, 1fr);
+}
+
 :root {
+    --pico-font-size: 90%;
     --sidebar-width: 300px;
     --pico-form-element-spacing-horizontal: 1rem;
     --pico-form-element-spacing-vertical: 0.5rem;

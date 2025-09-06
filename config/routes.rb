@@ -10,7 +10,7 @@ Rails.application.routes.draw do
       end
     end
   end
-  resources :transactions, only: [ :index, :edit, :new ]
+  resources :transactions, except: [ :show ]
 
   root to: "transactions#index"
 

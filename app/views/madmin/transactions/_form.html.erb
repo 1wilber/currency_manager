@@ -80,8 +80,5 @@
     <%= render "summary", form: %>
   <% end %>
 
-  <%= form.submit class: "btn btn-primary" %>
-  <%= link_to "Cancel",
-  (record.persisted? ? resource.show_path(record) : resource.index_path),
-  class: "btn" %>
+  <%= form.submit %>
 <% end %>

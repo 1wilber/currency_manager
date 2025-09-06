@@ -1,0 +1,63 @@
+<h4><%= t(:summary) %></h4>
+<table>
+
+  <tr>
+    <th>
+      <%= form.label :rate %>
+    </th>
+    <td>
+      <%= form.text_field :rate,
+                      value: money_as_value(form.object.rate),
+                      data: {
+                        transaction_form_target: "rate",
+                        controller: "number-input",
+                        action: "transaction-form#calculate",
+                      } %>
+    </td>
+  </tr>
+
+  <tr>
+    <th>
+      <%= form.label :cost_rate %>
+    </th>
+    <td>
+      <%= form.text_field :cost_rate,
+                      value: money_as_value(form.object.cost_rate),
+                      data: {
+                        transaction_form_target: "costRate",
+                        controller: "number-input",
+                        action: "transaction-form#calculate",
+                      } %>
+    </td>
+  </tr>
+  <tbody>
+    <tr>
+      <th><%= Transaction.human_attribute_name(:profit) %></th>
+      <td>
+
+        <%= form.text_field :profit,
+                        value: money_as_value(form.object.profit),
+                        class: "form-input-transparent text-right",
+                        readonly: true,
+                        data: {
+                          transaction_form_target: "profit",
+                          controller: "number-input",
+                        } %>
+      </td>
+    </tr>
+    <tr>
+
+      <th><%= Transaction.human_attribute_name(:total) %></th>
+      <td>
+        <%= form.text_field :total,
+                        value: money_as_value(form.object.total),
+                        class: "form-input-transparent text-right",
+                        readonly: true,
+                        data: {
+                          transaction_form_target: "total",
+                          controller: "number-input",
+                        } %>
+      </td>
+    </tr>
+  </tbody>
+</table>

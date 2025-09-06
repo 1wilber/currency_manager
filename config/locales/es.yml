@@ -1,4 +1,8 @@
 es:
+  summary: Resumen
+  edit: Editar
+  save: Guardar
+  saving: Guardando...
   forgot_password: ¿Olvidaste tu contraseña?
   sign_in: Iniciar Sesión
   forms:
@@ -40,16 +44,24 @@ es:
         first_name: Nombre
         last_name: Apellido
       transaction:
-        sender_id: Envia
-        receiver_id: Recibe
-        source_currency: "De"
-        target_currency: "A"
+        sender_id: Envias
+        sender: Envias
+        receiver: Recibes
+        receiver_id: Recibes
+        source_currency: "Moneda origen"
+        target_currency: "Moneda destino"
         rate: Tasa
         cost_rate: Tasa Costo
         amount: "Cantidad"
         total: "Total"
         profit: "Ganancia"
   transactions:
+    edit:
+      title: Editar Transacción
+      description: Edita los detalles de la transacción.
+    new:
+      title: Crear Transacción
+      description: Ingresa los detalles de la transacción.
     index:
       title: Transacciones
       description: Lista de todas las transacciones realizadas en el sistema.

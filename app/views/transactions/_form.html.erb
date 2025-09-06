@@ -1,0 +1,79 @@
+<%= render "shared/form_errors", errors: @record.errors.full_messages %>
+<%= form_with url: [:new, :transaction], method: :get, html: {data: {controller: "auto-submit"}, class: "grid grid--2-cols"} do |form| %>
+  <fieldset>
+    <%= form.hidden_field :sender_type, value: "Bank" %>
+    <%= form.label :sender_id, model_class.human_attribute_name(:sender_id) %>
+    <%= form.select :sender_id,
+                Bank.all.map { |bank| [bank.display_name, bank.id] },
+                { prompt: true, selected: @sender.try(:id) },
+                {
+                  data: {
+                    controller: "select",
+                    action: "auto-submit#submit",
+                  },
+                  required: true,
+                } %>
+  </fieldset>
+
+  <fieldset>
+    <%= form.hidden_field :receiver_type, value: "Customer" %>
+    <%= form.label :receiver_id, model_class.human_attribute_name(:receiver_id) %>
+    <%= form.select :receiver_id,
+                Customer.all.map { |customer| [customer.name, customer.id] },
+                { prompt: true, selected: @receiver.try(:id) },
+                { data: { action: "auto-submit#submit" }, required: true } %>
+  </fieldset>
+<% end %>
+
+<%= form_for transaction, local: true, html: {data: {controller: "transaction-form"}} do |form| %>
+
+  <div>
+    <%= form.hidden_field :sender_type, value: sender.class.name %>
+    <%= form.hidden_field :sender_id, value: sender.try(:id) %>
+    <%= form.hidden_field :receiver_type, value: receiver.class.name %>
+    <%= form.hidden_field :receiver_id, value: receiver.try(:id) %>
+  </div>
+
+  <div class="grid">
+    <fieldset>
+      <%= form.label :amount %>
+      <%= form.text_field :amount,
+                      value: money_as_value(transaction.send(:amount)),
+                      data: {
+                        transaction_form_target: "amount",
+                        controller: "number-input",
+                        action: "transaction-form#calculate",
+                      } %>
+    </fieldset>
+
+    <fieldset>
+      <%= form.label :source_currency %>
+      <%= form.select :source_currency,
+                  Rails.application.config.available_currencies,
+                  { prompt: true },
+                  { data: { controller: "select" }, class: "form-input" } %>
+    </fieldset>
+
+    <fieldset>
+      <% target_currency = form.object.target_currency || sender.try(:currency) %>
+      <%= form.hidden_field :target_currency, value: target_currency %>
+      <%= form.label :target_currency %>
+      <%= form.select :target_currency,
+                  [target_currency],
+                  { prompt: true, selected: target_currency },
+                  {
+                    disabled: true,
+                    data: {
+                      controller: "select",
+                    },
+                    class: "form-input",
+                  } %>
+    </fieldset>
+
+  </div>
+
+  <hr>
+  <%= render "summary", form: %>
+
+  <%= turbo_submit(form) %>
+<% end %>

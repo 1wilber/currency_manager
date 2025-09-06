@@ -5,4 +5,8 @@ module ButtonHelper
       concat tag.span { text }
     end
   end
+
+  def turbo_submit(form)
+    form.submit t(:save), data: { turbo_submits_with: t(:saving) }
+  end
 end

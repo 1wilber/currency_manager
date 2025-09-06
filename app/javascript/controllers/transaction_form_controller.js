@@ -5,7 +5,9 @@ import { post } from "@rails/request.js";
 export default class extends Controller {
   static targets = ["summary", "amount", "rate", "costRate", "total", "profit"];
 
-  connect() {}
+  connect() {
+    console.log(this.element);
+  }
 
   async calculate() {
     const costRate = this.costRateTarget.value;
