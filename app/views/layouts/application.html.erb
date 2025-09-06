@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-theme="light">
   <head>
     <title><%= content_for(:title) || "Currency Manager" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -18,11 +18,51 @@
     <link rel="apple-touch-icon" href="/icon.png">
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag "https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body
+    data-controller="sidebar app"
+    data-sidebar-controller="sidebar"
+    data-sidebar-active-class="is-active"
+  >
+    <aside class="sidebar" data-sidebar-target="sidebar">
+      <div class="overlay overlay--sidebar" data-action="click->sidebar#close">
+      </div>
+
+      <ul>
+        <li
+          class="sidebar-item <%= controller_name == "transactions" ? "sidebar-item--active" : "" %>"
+        >
+          <%= link_to Transaction.model_name.human(count: 2), transactions_path %>
+        </li>
+      </ul>
+    </aside>
+
+    <main id="content" class="container-fluid">
+      <div id="overlay" class="overlay">
+        <div class="overlay__content">
+          <span class="spinner"></span>
+          <p><%= t("loading") %></p>
+        </div>
+      </div>
+
+      <header class="mb-0">
+        <p class="sidebar-button" data-action="click->sidebar#open"><%= icon("menu") %></p>
+      </header>
+
+      <hgroup>
+        <h1><%= yield(:page_title) %></h1>
+        <p><%= yield(:page_description) %></p>
+      </hgroup>
+
+      <div class="page-actions">
+        <%= yield(:page_actions) %>
+      </div>
+
+      <%= yield %>
+    </main>
   </body>
 </html>

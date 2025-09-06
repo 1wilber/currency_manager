@@ -1,4 +1,7 @@
 es:
+  loading: Cargando...
+  search: Buscar por número
+  new: Crear
   pundit:
     not_authorized: "No estás autorizado para hacer eso."
   madmin:
@@ -39,3 +42,8 @@ es:
         amount: "Cantidad"
         total: "Total"
         profit: "Ganancia"
+  transactions:
+    index:
+      title: Transacciones
+      description: Lista de todas las transacciones realizadas en el sistema.
+      search: Buscar por número

@@ -22,35 +22,53 @@
         U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-p {
-    margin: 0;
-}
+@import url("layout.css");
+@import url("overlay.css");
+@import url("summary.css");
+@import url("sidebar.css");
 
-html {
-    font-family: "Montserrat Variable", sans-serif;
+[role="button"] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+    span {
+        vertical-align: middle;
+    }
 }
 
 :root {
-    --light-text-color: #6a7282;
-    --text-color: #101828;
+    --sidebar-width: 300px;
+    --pico-form-element-spacing-horizontal: 1rem;
+    --pico-form-element-spacing-vertical: 0.5rem;
 }
 
-.form-group-currency {
+.search-form {
     display: flex;
-    gap: 0.5rem;
+    align-items: center;
 }
 
-.form-input-transparent {
-    background-color: transparent;
-    box-shadow: none;
-    width: -webkit-fill-available;
-    padding: 0;
+.page-actions {
+    display: grid;
+    align-items: center;
 }
 
-.form-input-transparent:focus {
-    box-shadow: none;
-    border: none;
-    outline: none;
+@media (min-width: 768px) {
+    .page-actions {
+        display: flex;
+        margin-bottom: 1rem;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 1rem;
+        input {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.table-container {
+    overflow-x: auto;
+    width: 100%;
 }
 
 .spinner {
@@ -69,66 +87,4 @@ html {
     100% {
         transform: rotate(360deg);
     }
-}
-
-/* Overlay */
-.overlay {
-    left: 0;
-    top: 0;
-    width: -webkit-fill-available;
-    height: 100%;
-    position: absolute;
-    background: #f1f5f9;
-    opacity: 0.5;
-    visibility: hidden;
-    z-index: 100;
-    animation: visibility 0.5s ease-in-out forwards;
-}
-.overlay.overlay--visible {
-    visibility: visible;
-}
-
-.overlay__content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: inherit;
-}
-
-@media (min-width: 768px) {
-    .overlay {
-        left: var(--sidebar-width);
-    }
-}
-
-/*Summary*/
-
-.summary {
-    margin: 0;
-    padding: 0;
-    font-weight: 500;
-    margin-bottom: 1rem;
-}
-.summary li {
-    padding: 0;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 0.5rem;
-}
-
-/*Typography*/
-
-.text-muted {
-    color: var(--light-text-color);
-}
-
-.text-right {
-    text-align: right;
-}
-
-hr {
-    border-color: #e2e8f0;
 }

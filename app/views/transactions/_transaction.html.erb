@@ -1,0 +1,11 @@
+<tr>
+  <td><%= transaction.display_rate %></td>
+  <td><%= transaction.display_cost_rate %></td>
+  <td><%= transaction.display_amount %></td>
+  <td><%= transaction.display_total %></td>
+  <td><%= transaction.display_profit %></td>
+  <td><%= l(transaction.created_at, format: :short) %></td>
+  <td class="actions">
+    <%= link_to t("edit"), edit_transaction_path(transaction) %>
+  </td>
+</tr>

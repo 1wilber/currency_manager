@@ -1,0 +1,20 @@
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th><%= Transaction.human_attribute_name(:rate) %></th>
+        <th><%= Transaction.human_attribute_name(:cost_rate) %></th>
+        <th><%= Transaction.human_attribute_name(:amount) %></th>
+        <th><%= Transaction.human_attribute_name(:total) %></th>
+        <th><%= Transaction.human_attribute_name(:profit) %></th>
+        <th><%= t("created_at") %></th>
+        <th></th>
+      </tr>
+
+    </thead>
+    <tbody>
+      <%= render transactions %>
+
+    </tbody>
+  </table>
+</div>

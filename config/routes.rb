@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "transactions/index"
   resource :session
   resources :passwords, param: :token
   draw :madmin
@@ -9,7 +10,9 @@ Rails.application.routes.draw do
       end
     end
   end
-  root to: redirect("/madmin")
+  resources :transactions, only: [ :index, :edit, :new ]
+
+  root to: "transactions#index"
 
 
 

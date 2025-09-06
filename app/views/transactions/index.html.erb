@@ -1,0 +1,23 @@
+<%= content_for :page_title do %>
+  <%= t(".title") %>
+<% end %>
+
+<%= content_for :page_description do %>
+  <%= t(".description") %>
+<% end %>
+
+<%= content_for :page_actions do %>
+  <%= form_with(url: [:transactions], method: :get, html: {class: "search-form"}) do |f| %>
+    <%= f.search_field :q,
+                   class: "mb-0",
+                   value: params[:q],
+                   placeholder: t(".search", default: t("search")) %>
+  <% end %>
+
+  <%= link_to [:new, :transaction], role: :button do %>
+    <%= icon("plus") %>
+
+    <span><%= t("new") %></span>
+  <% end %>
+<% end %>
+<%= render "list", transactions: @collection %>
