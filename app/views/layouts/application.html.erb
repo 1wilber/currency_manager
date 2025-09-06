@@ -38,6 +38,12 @@
         >
           <%= link_to Transaction.model_name.human(count: 2), transactions_path %>
         </li>
+
+        <li
+          class="sidebar-item <%= controller_name == "metrics" ? "sidebar-item--active" : "" %>"
+        >
+          <%= link_to t("metrics.index.title"), metrics_path %>
+        </li>
       </ul>
     </aside>
 

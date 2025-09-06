@@ -11,6 +11,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_record
+    return unless model_class
     @record = if [ :edit, :update ].include?(action_name.to_sym)
       model_class.find(params[:id])
     else
@@ -19,6 +20,6 @@ class ApplicationController < ActionController::Base
   end
 
   def model_class
-    controller_name.singularize.classify.constantize
+    controller_name.singularize.classify.constantize rescue nil
   end
 end

@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   get "transactions/index"
+
+  resources :metrics, only: [ :index ]
   resource :session
   resources :passwords, param: :token
   draw :madmin

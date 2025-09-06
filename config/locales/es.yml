@@ -56,6 +56,10 @@ es:
         amount: "Cantidad"
         total: "Total"
         profit: "Ganancia"
+  metrics:
+    index:
+      title: Métricas
+      description: Puedes ver las métricas disponibles en el sistema.
   transactions:
     edit:
       title: Editar Transacción
