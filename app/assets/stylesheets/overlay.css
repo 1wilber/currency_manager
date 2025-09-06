@@ -1,7 +1,7 @@
 .overlay {
-    width: -webkit-fill-available;
+    width: -moz-available;
     height: 100%;
-    position: fixed;
+    position: absolute;
     background: rgba(241, 245, 249, 0.5);
     opacity: 0.5;
     visibility: hidden;
@@ -23,7 +23,5 @@
 
 @media screen and (min-width: 768px) {
     .overlay {
-        position: absolute;
-        margin-left: var(--sidebar-width);
     }
 }

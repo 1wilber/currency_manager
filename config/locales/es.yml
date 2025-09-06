@@ -1,4 +1,11 @@
 es:
+  forgot_password: ¿Olvidaste tu contraseña?
+  sign_in: Iniciar Sesión
+  forms:
+    users:
+      placeholders:
+        email: "admin@lvh.me"
+        password: "********"
   loading: Cargando...
   search: Buscar por número
   new: Crear
@@ -47,3 +54,9 @@ es:
       title: Transacciones
       description: Lista de todas las transacciones realizadas en el sistema.
       search: Buscar por número
+
+  sessions:
+    invalid_email_or_password: Correo electrónico o contraseña inválidos.
+    new:
+      title: Iniciar Sesión
+      description: Inicia sesión para acceder a la aplicación.
