@@ -1,10 +1,10 @@
 .metrics {
-}
-
-.metric__body {
+    margin-bottom: 1rem;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    hgroup {
+    gap: 0.5rem;
+    .metric {
+        width: -webkit-fill-available;
         margin-bottom: 0;
         h6 {
             font-size: 0.75rem;
@@ -18,5 +18,16 @@
             margin-bottom: 0;
             color: var(--pico-contrast);
         }
+    }
+}
+
+.metric__body {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 768px) {
+    .metrics {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     }
 }

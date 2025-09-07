@@ -50,9 +50,15 @@
 }
 
 .search-form {
-    display: flex;
+    display: grid;
     align-items: center;
     gap: 0.5rem;
+}
+
+@media (min-width: 768px) {
+    .search-form {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 .page-actions {

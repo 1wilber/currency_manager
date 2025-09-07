@@ -1,5 +1,7 @@
 <tr>
   <td>#<%= transaction.id %></td>
+  <td><%= transaction.sender.name %></td>
+  <td><%= transaction.receiver.name %></td>
   <td><%= transaction.display_rate %></td>
   <td><%= transaction.display_cost_rate %></td>
   <td><%= transaction.display_amount %></td>

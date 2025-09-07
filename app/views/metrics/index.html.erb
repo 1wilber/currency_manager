@@ -14,12 +14,12 @@
   </hgroup>
 
   <div class="metric__body">
-    <hgroup>
+    <hgroup class="metric">
       <h6><%= Transaction.model_name.human(count: 2) %></h6>
       <p><%= @collection.count %></p>
     </hgroup>
 
-    <hgroup>
+    <hgroup class="metric">
       <h6><%= t(:profit) %>
         (CLP)</h6>
       <p><%= @transactions_profit %></p>
@@ -28,7 +28,7 @@
 </article>
 
 <article>
-  <hgroup>
+  <hgroup class="metric">
     <h5>
       <%= t("metrics.index.transactions_per_day") %>
     </h5>
@@ -40,10 +40,11 @@
 </article>
 
 <article>
-  <hgroup>
-    <h5>
+  <hgroup class="metric">
+    <h6>
       <%= t("metrics.index.profit_per_day") %>
-    </h5>
+    </h6>
+    <p><%= @profit_per_day %></p>
   </hgroup>
 
   <%= line_chart @collection.group(:created_at).sum(:profit) %>

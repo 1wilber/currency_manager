@@ -22,4 +22,28 @@
   <%= icon_link t("new"), %i[new transaction], icon: "plus", role: :button %>
 <% end %>
 
+<div class="metrics">
+  <article class="metric">
+    <h6>
+      <%= Transaction.human_attribute_name(:total) %>
+      (<%= current_exchange_rate.target %>)
+    </h6>
+    <p><%= @total %></p>
+  </article>
+  <article class="metric">
+    <h6>
+      <%= Transaction.human_attribute_name(:amount) %>
+      (<%= current_exchange_rate.source %>)
+    </h6>
+    <p><%= @total_amount %></p>
+  </article>
+
+  <article class="metric">
+    <h6>
+      <%= Transaction.human_attribute_name(:profit) %>
+      (<%= current_exchange_rate.source %>)
+    </h6>
+    <p><%= @total_profit %></p>
+  </article>
+</div>
 <%= render "list", transactions: @collection %>

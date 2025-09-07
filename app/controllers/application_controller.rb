@@ -1,6 +1,9 @@
+require "ostruct"
+
 class ApplicationController < ActionController::Base
   include Authentication
-  helper_method :model_class
+  helper_method :model_class, :current_exchange_rate
+
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
 
@@ -21,5 +24,9 @@ class ApplicationController < ActionController::Base
 
   def model_class
     controller_name.singularize.classify.constantize rescue nil
+  end
+
+  def current_exchange_rate
+    OpenStruct.new(source: "CLP", target: "VES")
   end
 end

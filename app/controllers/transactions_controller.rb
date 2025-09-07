@@ -4,8 +4,15 @@ class TransactionsController < ApplicationController
 
   def index
     params[:by_created_at] ||= Time.zone.now.strftime("%Y-%m-%d")
+    params[:by_source_currency] ||= current_exchange_rate.source
+    params[:by_target_currency] ||= current_exchange_rate.target
+
+
 
     @collection = apply_scopes(Transaction).order(id: :desc)
+    @total_amount = Money.new(@collection.sum(:amount), current_exchange_rate.source).format(symbol: "$")
+    @total_profit = Money.new(@collection.sum(:profit), current_exchange_rate.source).format(symbol: "$")
+    @total = Money.new(@collection.sum(:total), current_exchange_rate.target).format(symbol: "$")
   end
 
   def create

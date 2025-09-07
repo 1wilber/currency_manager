@@ -3,6 +3,8 @@
     <thead>
       <tr>
         <th><%= t(:id) %></th>
+        <th><%= Transaction.human_attribute_name(:sender) %></th>
+        <th><%= Transaction.human_attribute_name(:receiver) %></th>
         <th><%= Transaction.human_attribute_name(:rate) %></th>
         <th><%= Transaction.human_attribute_name(:cost_rate) %></th>
         <th><%= Transaction.human_attribute_name(:amount) %></th>

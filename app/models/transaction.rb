@@ -8,6 +8,14 @@ class Transaction < ApplicationRecord
     where(created_at: time.beginning_of_day..time.end_of_day)
   end
 
+  scope :by_target_currency, ->(currency) do
+    where(target_currency: currency)
+  end
+
+  scope :by_source_currency, ->(currency) do
+    where(source_currency: currency)
+  end
+
   before_save :set_total_and_profit
 
   with_options presence: true do
@@ -19,11 +27,12 @@ class Transaction < ApplicationRecord
   end
 
   def display_rate
-    "1 #{source_currency} = #{rate} #{target_currency}"
+    # "1 #{source_currency} = #{rate} #{target_currency}"
+    rate
   end
 
   def display_cost_rate
-    "1 #{source_currency} = #{cost_rate} #{target_currency}"
+    display_rate
   end
 
   def display_amount

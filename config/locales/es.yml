@@ -46,16 +46,16 @@ es:
         first_name: Nombre
         last_name: Apellido
       transaction:
-        sender_id: Envias
-        sender: Envias
-        receiver: Recibes
-        receiver_id: Recibes
+        sender_id: Banco
+        sender: Banco
+        receiver: Cliente
+        receiver_id: Cliente
         source_currency: "Moneda origen"
         target_currency: "Moneda destino"
         rate: Tasa
-        cost_rate: Tasa Costo
-        amount: "Cantidad"
-        total: "Total"
+        cost_rate: Tasa proveedor
+        amount: "Pesos recibidos"
+        total: "Bs Pagados"
         profit: "Ganancia"
   metrics:
     today_summary:
