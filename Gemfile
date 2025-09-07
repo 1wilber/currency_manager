@@ -72,3 +72,7 @@ gem "interactor-rails", "~> 2.3"
 gem "roo", "~> 2.10"
 
 gem "has_scope", "~> 0.8.2"
+
+gem "chartkick", "~> 5.2"
+
+gem "groupdate", "~> 6.7"

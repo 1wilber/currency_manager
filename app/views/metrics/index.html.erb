@@ -1,2 +1,22 @@
 <%= content_for(:page_title) { t(".title") } %>
 <%= content_for(:page_description) { t(".description") } %>
+
+<div class="grid">
+  <article>
+    <h4>
+      <%= @collection.count %>
+    </h4>
+    <p><%= Transaction.model_name.human %></p>
+
+  </article>
+</div>
+
+<article>
+  <h4>Cantidad por día</h4>
+  <%= line_chart @collection.group(:created_at).count %>
+</article>
+
+<article>
+  <h4>Ganancia por día (CLP)</h4>
+  <%= line_chart @collection.group(:created_at).sum(:profit) %>
+</article>
