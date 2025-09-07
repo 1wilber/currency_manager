@@ -1,4 +1,5 @@
 es:
+  profit: Ganancia
   file_not_found: Archivo no encontrado
   summary: Resumen
   edit: Editar
@@ -57,7 +58,12 @@ es:
         total: "Total"
         profit: "Ganancia"
   metrics:
+    today_summary:
+      title: Resumen del día
+      description: Métricas del día actual.
     index:
+      transactions_per_day: Transacciones por día
+      profit_per_day: Ganancia por día
       title: Métricas
       description: Puedes ver las métricas disponibles en el sistema.
   transactions:

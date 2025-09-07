@@ -80,13 +80,15 @@ class TransactionsController < ApplicationController
       model_class.find(params[:id])
     else
       @last_transaction = model_class.last
-      params[:sender_type] ||= @last_transaction.sender_type
-      params[:sender_id] ||= @last_transaction.sender_id
-      model_class.new(
-        rate: @last_transaction.rate,
-        cost_rate: @last_transaction.cost_rate,
-        source_currency: @last_transaction.source_currency,
-      )
+      if @last_transaction.present?
+        params[:sender_type] ||= @last_transaction.sender_type
+        params[:sender_id] ||= @last_transaction.sender_id
+        model_class.new(
+          rate: @last_transaction.rate,
+          cost_rate: @last_transaction.cost_rate,
+          source_currency: @last_transaction.source_currency,
+        )
+      end
     end
   end
 end

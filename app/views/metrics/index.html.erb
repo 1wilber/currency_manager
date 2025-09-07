@@ -1,22 +1,50 @@
 <%= content_for(:page_title) { t(".title") } %>
 <%= content_for(:page_description) { t(".description") } %>
 
-<div class="grid">
-  <article>
-    <h4>
-      <%= @collection.count %>
-    </h4>
-    <p><%= Transaction.model_name.human %></p>
+<h2>
+  <%= l(@date, format: "%B del %Y").capitalize %>
+</h2>
 
-  </article>
-</div>
+<article class="metrics">
+  <hgroup>
+    <h5>
+      <%= t("metrics.today_summary.title") %>
+    </h5>
+    <p><%= t("metrics.today_summary.description") %></p>
+  </hgroup>
 
-<article>
-  <h4>Cantidad por día</h4>
-  <%= line_chart @collection.group(:created_at).count %>
+  <div class="metric__body">
+    <hgroup>
+      <h6><%= Transaction.model_name.human(count: 2) %></h6>
+      <p><%= @collection.count %></p>
+    </hgroup>
+
+    <hgroup>
+      <h6><%= t(:profit) %>
+        (CLP)</h6>
+      <p><%= @transactions_profit %></p>
+    </hgroup>
+  </div>
 </article>
 
 <article>
-  <h4>Ganancia por día (CLP)</h4>
+  <hgroup>
+    <h5>
+      <%= t("metrics.index.transactions_per_day") %>
+    </h5>
+    <small>En promedio ~<%= @transactions_per_day_avg %>
+      al día</small>
+  </hgroup>
+
+  <%= line_chart @transactions_per_day %>
+</article>
+
+<article>
+  <hgroup>
+    <h5>
+      <%= t("metrics.index.profit_per_day") %>
+    </h5>
+  </hgroup>
+
   <%= line_chart @collection.group(:created_at).sum(:profit) %>
 </article>

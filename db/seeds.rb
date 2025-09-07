@@ -9,7 +9,7 @@
 #   end
 User.create!(first_name: "Don", last_name: "Garcia", email_address: "admin@example.com", password: "password")
 
-path = "/home/wilber/Documents/cdp"
+path = "/home/wilber/MEGA/Documents/cdp/"
 folders = Dir.entries(path).reject { |entry| entry.start_with?('.') }.sort
 
 folders.each do |folder|

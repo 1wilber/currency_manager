@@ -1,0 +1,22 @@
+.metrics {
+}
+
+.metric__body {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    hgroup {
+        margin-bottom: 0;
+        h6 {
+            font-size: 0.75rem;
+            font-weight: 400;
+            margin-bottom: 0;
+            text-transform: uppercase;
+        }
+        p {
+            font-size: 1.875rem !important;
+            font-weight: 500;
+            margin-bottom: 0;
+            color: var(--pico-contrast);
+        }
+    }
+}

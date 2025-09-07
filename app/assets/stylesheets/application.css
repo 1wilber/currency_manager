@@ -26,6 +26,7 @@
 @import url("overlay.css");
 @import url("summary.css");
 @import url("sidebar.css");
+@import url("metrics.css");
 
 [role="button"] {
     display: flex;
