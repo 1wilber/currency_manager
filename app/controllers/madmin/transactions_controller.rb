@@ -7,6 +7,7 @@ module Madmin
 
     skip_before_action :set_record, only: [ :calculate ]
     before_action :set_sender, only: [ :new ]
+    before_action :set_current_date, only: [ :index ]
 
     def calculate
       amount = params.dig(:amount) || 0
@@ -19,10 +20,6 @@ module Madmin
         @transaction.calculate_profit
         @transaction.calculate_total
       end
-
-      puts @transaction.slice(:rate, :cost_rate, :amount, :total, :profit).as_json
-      puts
-      puts
 
       result = {
         amount: money_as_value(@transaction.amount),
@@ -40,6 +37,10 @@ module Madmin
     end
 
     private
+
+    def set_current_date
+      puts params[:by_created_at]
+    end
 
     def sender_id
       resource_params.dig(:sender_id)

@@ -11,3 +11,5 @@ pin "@stimulus-components/auto-submit", to: "@stimulus-components--auto-submit.j
 
 pin "chartkick", to: "chartkick.js"
 pin "Chart.bundle", to: "Chart.bundle.js"
+pin "flatpickr" # @4.6.13
+pin "flatpickr/dist/l10n/es.js", to: "flatpickr--dist--l10n--es.js.js" # @4.6.13

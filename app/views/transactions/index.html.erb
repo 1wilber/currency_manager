@@ -8,10 +8,11 @@
 
 <%= content_for :page_actions do %>
   <%= form_with(url: [:transactions], method: :get, html: {class: "search-form", data: {controller: "auto-submit"}}) do |f| %>
-    <%= f.date_field :by_created_at,
-                 value: params[:by_created_at],
+    <%= f.date_field :by_range,
                  data: {
-                   action: "auto-submit#submit",
+                   controller: "date-picker",
+                   date_picker_default_date_value:
+                     @date_range.map { |date| date.strftime("%d/%m/%Y") },
                  } %>
     <%= f.search_field :q,
                    class: "mb-0",
@@ -46,4 +47,5 @@
     <p><%= @total_profit %></p>
   </article>
 </div>
+
 <%= render "list", transactions: @collection %>

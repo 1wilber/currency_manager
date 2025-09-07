@@ -27,6 +27,7 @@
 @import url("summary.css");
 @import url("sidebar.css");
 @import url("metrics.css");
+@import url("flatpickr.min.css");
 
 [role="button"] {
     display: flex;

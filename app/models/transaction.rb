@@ -3,9 +3,10 @@ class Transaction < ApplicationRecord
   belongs_to :sender, polymorphic: true
   belongs_to :receiver, polymorphic: true
 
-  scope :by_created_at, ->(date) do
-    time = date.to_date
-    where(created_at: time.beginning_of_day..time.end_of_day)
+  scope :by_range, ->(range) do
+    from, to = range
+    to ||= from.end_of_day
+    where(created_at: from.beginning_of_day..to.end_of_day)
   end
 
   scope :by_target_currency, ->(currency) do
