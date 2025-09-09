@@ -28,6 +28,8 @@
     data-sidebar-controller="sidebar"
     data-sidebar-active-class="is-active"
   >
+
+    <%= turbo_frame_tag :modal %>
     <aside class="sidebar" data-sidebar-target="sidebar">
       <div class="overlay overlay--sidebar" data-action="click->sidebar#close">
       </div>

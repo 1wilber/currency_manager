@@ -100,10 +100,6 @@ class TransactionsController < ApplicationController
 
 
   def set_date_range
-    @date_range = if params[:by_range].present?
-      params[:by_range].split("a").map(&:strip).map(&:to_date)
-    else
-      @date_range = [Date.today, Date.today]
-    end
+    @date_range = params[:by_range].present? ? params[:by_range].to_date : Date.today
   end
 end

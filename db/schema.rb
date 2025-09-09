@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_31_190059) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_08_002121) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
 
   create_table "banks", force: :cascade do |t|
     t.string "name"

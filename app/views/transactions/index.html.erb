@@ -11,8 +11,8 @@
     <%= f.date_field :by_range,
                  data: {
                    controller: "date-picker",
-                   date_picker_default_date_value:
-                     @date_range.map { |date| date.strftime("%d/%m/%Y") },
+                   action: "auto-submit#submit",
+                   date_picker_default_date_value: @date_range.strftime("%d/%m/%Y"),
                  } %>
     <%= f.search_field :q,
                    class: "mb-0",
@@ -21,6 +21,15 @@
   <% end %>
 
   <%= icon_link t("new"), %i[new transaction], icon: "plus", role: :button %>
+
+  <%= icon_link t("edit_bank_balances"),
+  %i[bank_balances],
+  icon: "edit",
+  role: :button,
+  data: {
+    turbo_frame: :modal,
+  } %>
+
 <% end %>
 
 <div class="metrics">
