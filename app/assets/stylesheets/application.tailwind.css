@@ -1,0 +1,3 @@
+@import "./flatpickr.min.css";
+@import "tailwindcss";
+@plugin "daisyui";

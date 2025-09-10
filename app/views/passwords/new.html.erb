@@ -1,8 +1,48 @@
-<h1>Forgot your password?</h1>
+<%= content_for(:page_title) { "Forgot your password?" } %>
 
-<%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
-
-<%= form_with url: passwords_path do |form| %>
-  <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address] %><br>
-  <%= form.submit "Email reset instructions" %>
+<% if flash[:alert] %>
+  <div class="alert alert-error mb-4">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="stroke-current shrink-0 h-6 w-6"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
+    <span><%= flash[:alert] %></span>
+  </div>
 <% end %>
+
+<div class="max-w-md mx-auto">
+  <div class="card bg-base-100 shadow-xl">
+    <div class="card-body">
+      <%= form_with url: passwords_path, html: {class: "space-y-4"} do |form| %>
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">Reset Password</legend>
+
+          <label class="label" for="email_address">
+            <span class="label-text">Email address</span>
+          </label>
+          <%= form.email_field :email_address,
+                           id: "email_address",
+                           required: true,
+                           autofocus: true,
+                           autocomplete: "username",
+                           placeholder: "Enter your email address",
+                           value: params[:email_address],
+                           class: "input input-bordered w-full" %>
+
+          <div class="card-actions justify-end mt-6">
+            <%= form.submit "Email reset instructions", class: "btn btn-primary" %>
+          </div>
+        </fieldset>
+      <% end %>
+    </div>
+  </div>
+</div>

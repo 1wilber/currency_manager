@@ -1,8 +1,9 @@
 class TransactionsController < ApplicationController
+  include ButtonHelper
   before_action :set_sender, :set_receiver, only: [ :new, :edit ]
   before_action :set_date_range, only: [ :index ]
-  has_scope :by_source_currency, only: [:index]
-  has_scope :by_target_currency, only: [:index]
+  has_scope :by_source_currency, only: [ :index ]
+  has_scope :by_target_currency, only: [ :index ]
 
   def index
     params[:by_source_currency] ||= current_exchange_rate.source

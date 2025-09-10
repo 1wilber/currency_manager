@@ -7,54 +7,60 @@
 <% end %>
 
 <%= content_for :page_actions do %>
-  <%= form_with(url: [:transactions], method: :get, html: {class: "search-form", data: {controller: "auto-submit"}}) do |f| %>
-    <%= f.date_field :by_range,
-                 data: {
-                   controller: "date-picker",
-                   action: "auto-submit#submit",
-                   date_picker_default_date_value: @date_range.strftime("%d/%m/%Y"),
-                 } %>
-    <%= f.search_field :q,
-                   class: "mb-0",
-                   value: params[:q],
-                   placeholder: t(".search", default: t("search")) %>
-  <% end %>
+  <div class="flex flex-col gap-3">
+    <%= form_with(url: [:transactions], method: :get, html: {class: "", data: {controller: "auto-submit"}}) do |f| %>
+      <%= f.date_field :by_range,
+                   class: "input input-bordered w-full",
+                   data: {
+                     controller: "date-picker",
+                     action: "auto-submit#submit",
+                     date_picker_default_date_value: @date_range.strftime("%d/%m/%Y"),
+                   } %>
+    <% end %>
 
-  <%= icon_link t("new"), %i[new transaction], icon: "plus", role: :button %>
+    <div class="flex flex-col md:flex-row md:gap-3 md:justify-end">
+      <%= icon_link t("new"), %i[new transaction], icon: "plus", class: "btn btn-primary" %>
 
-  <%= icon_link t("edit_bank_balances"),
-  %i[bank_balances],
-  icon: "edit",
-  role: :button,
-  data: {
-    turbo_frame: :modal,
-  } %>
-
+      <%= icon_link t("edit_bank_balances"),
+      %i[bank_balances],
+      icon: "edit",
+      class: "btn btn-outline",
+      data: {
+        turbo_frame: :modal,
+      } %>
+    </div>
+  </div>
 <% end %>
 
-<div class="metrics">
-  <article class="metric">
-    <h6>
-      <%= Transaction.human_attribute_name(:total) %>
-      (<%= current_exchange_rate.target %>)
-    </h6>
-    <p><%= @total %></p>
-  </article>
-  <article class="metric">
-    <h6>
-      <%= Transaction.human_attribute_name(:amount) %>
-      (<%= current_exchange_rate.source %>)
-    </h6>
-    <p><%= @total_amount %></p>
-  </article>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+  <div class="card bg-base-100 shadow-sm">
+    <div class="card-body">
+      <h6 class="text-sm font-medium text-base-content/70 mb-1">
+        <%= Transaction.human_attribute_name(:total) %>
+        (<%= current_exchange_rate.target %>)
+      </h6>
+      <p class="text-2xl font-bold text-primary"><%= @total %></p>
+    </div>
+  </div>
+  <div class="card bg-base-100 shadow-sm">
+    <div class="card-body">
+      <h6 class="text-sm font-medium text-base-content/70 mb-1">
+        <%= Transaction.human_attribute_name(:amount) %>
+        (<%= current_exchange_rate.source %>)
+      </h6>
+      <p class="text-2xl font-bold text-primary"><%= @total_amount %></p>
+    </div>
+  </div>
 
-  <article class="metric">
-    <h6>
-      <%= Transaction.human_attribute_name(:profit) %>
-      (<%= current_exchange_rate.source %>)
-    </h6>
-    <p><%= @total_profit %></p>
-  </article>
+  <div class="card bg-base-100 shadow-sm">
+    <div class="card-body">
+      <h6 class="text-sm font-medium text-base-content/70 mb-1">
+        <%= Transaction.human_attribute_name(:profit) %>
+        (<%= current_exchange_rate.source %>)
+      </h6>
+      <p class="text-2xl font-bold text-primary"><%= @total_profit %></p>
+    </div>
+  </div>
 </div>
 
 <%= render "list", transactions: @collection %>

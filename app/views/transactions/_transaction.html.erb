@@ -1,14 +1,16 @@
 <tr>
-  <td>#<%= transaction.id %></td>
-  <td><%= transaction.sender.name %></td>
-  <td><%= transaction.receiver.name %></td>
-  <td><%= transaction.display_rate %></td>
-  <td><%= transaction.display_cost_rate %></td>
-  <td><%= transaction.display_amount %></td>
-  <td><%= transaction.display_total %></td>
-  <td><%= transaction.display_profit %></td>
-  <td><%= l(transaction.created_at, format: :short) %></td>
-  <td class="actions">
-    <%= link_to t("edit"), edit_transaction_path(transaction) %>
+  <td class="font-mono text-sm">#<%= transaction.id %></td>
+  <td class="font-medium"><%= transaction.sender.name %></td>
+  <td class="font-medium"><%= transaction.receiver.name %></td>
+  <td class="text-right tabular-nums"><%= transaction.display_rate %></td>
+  <td class="text-right tabular-nums"><%= transaction.display_cost_rate %></td>
+  <td class="text-right tabular-nums font-semibold"><%= transaction.display_amount %></td>
+  <td class="text-right tabular-nums font-semibold text-primary"><%= transaction.display_total %></td>
+  <td class="text-right tabular-nums font-semibold text-success"><%= transaction.display_profit %></td>
+  <td class="text-sm text-base-content/70"><%= l(transaction.created_at, format: :short) %></td>
+  <td>
+    <%= link_to t("edit"),
+    edit_transaction_path(transaction),
+    class: "btn btn-sm btn-outline btn-primary" %>
   </td>
 </tr>

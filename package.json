@@ -1,0 +1,30 @@
+{
+  "name": "currency_manager",
+  "version": "1.0.0",
+  "description": "This README would normally document whatever steps are necessary to get the application up and running.",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "npx @tailwindcss/cli -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1wilber/currency_manager.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/1wilber/currency_manager/issues"
+  },
+  "homepage": "https://github.com/1wilber/currency_manager#readme",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.13",
+    "daisyui": "^5.1.9",
+    "tailwindcss": "^4.1.13"
+  }
+}

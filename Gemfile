@@ -76,3 +76,5 @@ gem "has_scope", "~> 0.8.2"
 gem "chartkick", "~> 5.2"
 
 gem "groupdate", "~> 6.7"
+
+gem "cssbundling-rails", "~> 1.4"

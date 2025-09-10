@@ -1,5 +1,5 @@
-<div class="table-container">
-  <table>
+<div class="overflow-x-auto">
+  <table class="table table-zebra">
     <thead>
       <tr>
         <th><%= t(:id) %></th>
@@ -13,11 +13,9 @@
         <th><%= t("created_at") %></th>
         <th></th>
       </tr>
-
     </thead>
     <tbody>
       <%= render transactions %>
-
     </tbody>
   </table>
 </div>

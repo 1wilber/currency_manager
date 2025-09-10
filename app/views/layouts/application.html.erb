@@ -18,8 +18,7 @@
     <link rel="apple-touch-icon" href="/icon.png">
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag "https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
@@ -27,50 +26,80 @@
     data-controller="sidebar app"
     data-sidebar-controller="sidebar"
     data-sidebar-active-class="is-active"
+    class="bg-base-200"
   >
 
     <%= turbo_frame_tag :modal %>
-    <aside class="sidebar" data-sidebar-target="sidebar">
-      <div class="overlay overlay--sidebar" data-action="click->sidebar#close">
-      </div>
-
-      <ul>
-        <li
-          class="sidebar-item <%= controller_name == "transactions" ? "sidebar-item--active" : "" %>"
-        >
-          <%= link_to Transaction.model_name.human(count: 2), transactions_path %>
-        </li>
-
-        <li
-          class="sidebar-item <%= controller_name == "metrics" ? "sidebar-item--active" : "" %>"
-        >
-          <%= link_to t("metrics.index.title"), metrics_path %>
-        </li>
-      </ul>
-    </aside>
-
-    <main id="content" class="container-fluid">
-      <div id="overlay" class="overlay">
-        <div class="overlay__content">
-          <span class="spinner"></span>
-          <p><%= t("loading") %></p>
+    <!-- Sidebar -->
+    <div class="drawer lg:drawer-open">
+      <input id="sidebar-toggle" type="checkbox" class="drawer-toggle">
+      <!-- Main content -->
+      <div class="drawer-content">
+        <!-- Navbar -->
+        <div class="navbar bg-base-100 shadow-sm lg:hidden">
+          <div class="flex-none">
+            <label
+              for="sidebar-toggle"
+              class="btn btn-square btn-ghost"
+              data-action="click->sidebar#open"
+            >
+              <%= icon("menu") %>
+            </label>
+          </div>
+        </div>
+        <!-- Page content -->
+        <div class="min-h-screen bg-base-200">
+          <div class="max-w-7xl mx-auto p-4">
+            <!-- Loading overlay -->
+            <div
+              id="overlay"
+              class="
+                fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center
+              "
+            >
+              <div class="text-center text-white">
+                <span class="loading loading-spinner loading-lg"></span>
+                <p class="mt-2"><%= t("loading") %></p>
+              </div>
+            </div>
+            <!-- Page header -->
+            <div class="mb-6">
+              <h1 class="text-3xl font-bold text-base-content"><%= yield(:page_title) %></h1>
+              <p class="text-base-content/70 mt-1"><%= yield(:page_description) %></p>
+            </div>
+            <!-- Page actions -->
+            <div class="mb-6">
+              <%= yield(:page_actions) %>
+            </div>
+            <!-- Main content -->
+            <%= yield %>
+          </div>
         </div>
       </div>
-
-      <header class="mb-0">
-        <p class="sidebar-button" data-action="click->sidebar#open"><%= icon("menu") %></p>
-      </header>
-
-      <hgroup>
-        <h1><%= yield(:page_title) %></h1>
-        <p><%= yield(:page_description) %></p>
-      </hgroup>
-
-      <div class="page-actions">
-        <%= yield(:page_actions) %>
+      <!-- Sidebar -->
+      <div class="drawer-side">
+        <label
+          for="sidebar-toggle"
+          class="drawer-overlay"
+          data-action="click->sidebar#close"
+        ></label>
+        <aside class="w-72 min-h-full bg-base-100 shadow-xl">
+          <div class="p-4">
+            <ul class="menu">
+              <li class="<%= controller_name == "transactions" ? "bordered" : "" %>">
+                <%= link_to Transaction.model_name.human(count: 2),
+                transactions_path,
+                class: "#{controller_name == "transactions" ? "active" : ""}" %>
+              </li>
+              <li class="<%= controller_name == "metrics" ? "bordered" : "" %>">
+                <%= link_to t("metrics.index.title"),
+                metrics_path,
+                class: "#{controller_name == "metrics" ? "active" : ""}" %>
+              </li>
+            </ul>
+          </div>
+        </aside>
       </div>
-
-      <%= yield %>
-    </main>
+    </div>
   </body>
 </html>

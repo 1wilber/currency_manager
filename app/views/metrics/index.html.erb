@@ -1,51 +1,57 @@
 <%= content_for(:page_title) { t(".title") } %>
 <%= content_for(:page_description) { t(".description") } %>
 
-<h2>
-  <%= l(@date, format: "%B del %Y").capitalize %>
-</h2>
+<div class="mb-6">
+  <h2 class="text-2xl font-bold text-base-content">
+    <%= l(@date, format: "%B del %Y").capitalize %>
+  </h2>
+</div>
 
-<article class="metrics">
-  <hgroup>
-    <h5>
+<div class="card bg-base-100 shadow-sm mb-6">
+  <div class="card-body">
+    <div class="card-title">
       <%= t("metrics.today_summary.title") %>
-    </h5>
-    <p><%= t("metrics.today_summary.description") %></p>
-  </hgroup>
+    </div>
+    <p class="text-base-content/70 mb-4"><%= t("metrics.today_summary.description") %></p>
 
-  <div class="metric__body">
-    <hgroup class="metric">
-      <h6><%= Transaction.model_name.human(count: 2) %></h6>
-      <p><%= @collection.count %></p>
-    </hgroup>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="stat bg-base-200 rounded-lg">
+        <div class="stat-title"><%= Transaction.model_name.human(count: 2) %></div>
+        <div class="stat-value text-primary"><%= @collection.count %></div>
+      </div>
 
-    <hgroup class="metric">
-      <h6><%= t(:profit) %>
-        (CLP)</h6>
-      <p><%= @transactions_profit %></p>
-    </hgroup>
+      <div class="stat bg-base-200 rounded-lg">
+        <div class="stat-title"><%= t(:profit) %>
+          (CLP)</div>
+        <div class="stat-value text-success"><%= @transactions_profit %></div>
+      </div>
+    </div>
   </div>
-</article>
+</div>
 
-<article>
-  <hgroup class="metric">
-    <h5>
+<div class="card bg-base-100 shadow-sm mb-6">
+  <div class="card-body">
+    <div class="card-title">
       <%= t("metrics.index.transactions_per_day") %>
-    </h5>
-    <small>En promedio ~<%= @transactions_per_day_avg %>
-      al día</small>
-  </hgroup>
+    </div>
+    <p class="text-sm text-base-content/70 mb-4">
+      En promedio ~<%= @transactions_per_day_avg %>
+      al día
+    </p>
+    <div class="w-full overflow-hidden">
+      <%= line_chart @transactions_per_day %>
+    </div>
+  </div>
+</div>
 
-  <%= line_chart @transactions_per_day %>
-</article>
-
-<article>
-  <hgroup class="metric">
-    <h6>
+<div class="card bg-base-100 shadow-sm">
+  <div class="card-body">
+    <div class="card-title">
       <%= t("metrics.index.profit_per_day") %>
-    </h6>
-    <p><%= @profit_per_day %></p>
-  </hgroup>
-
-  <%= line_chart @collection.group(:created_at).sum(:profit) %>
-</article>
+    </div>
+    <div class="stat-value text-success mb-4"><%= @profit_per_day %></div>
+    <div class="w-full overflow-hidden">
+      <%= line_chart @collection.group(:created_at).sum(:profit) %>
+    </div>
+  </div>
+</div>
