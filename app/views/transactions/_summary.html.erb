@@ -1,51 +1,48 @@
-<h4 class="text-lg font-semibold mb-4"><%= t(:summary) %></h4>
+<table class="table table--compact">
+  <tbody>
+    <tr>
+      <th><%= form.object.class.human_attribute_name(:rate) %></th>
+      <td class="text-right">
+        <%= form.text_field :rate,
+                        value: money_as_value(form.object.rate),
+                        class: "input input--underline text-right",
+                        data: {
+                          transaction_form_target: "rate",
+                          controller: "number-input",
+                          action: "transaction-form#calculate",
+                        } %>
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-  <fieldset class="fieldset">
-    <legend class="fieldset-legend"><%= form.object.class.human_attribute_name(:rate) %></legend>
-    <%= form.text_field :rate,
-                    value: money_as_value(form.object.rate),
-                    class: "input input-bordered w-full",
-                    data: {
-                      transaction_form_target: "rate",
-                      controller: "number-input",
-                      action: "transaction-form#calculate",
-                    } %>
-  </fieldset>
+      </td>
+    </tr>
 
-  <fieldset class="fieldset">
-    <legend class="fieldset-legend"><%= form.object.class.human_attribute_name(:cost_rate) %></legend>
-    <%= form.text_field :cost_rate,
-                    value: money_as_value(form.object.cost_rate),
-                    class: "input input-bordered w-full",
-                    data: {
-                      transaction_form_target: "costRate",
-                      controller: "number-input",
-                      action: "transaction-form#calculate",
-                    } %>
-  </fieldset>
+    <tr>
+      <th><%= form.object.class.human_attribute_name(:cost_rate) %></th>
+      <td class="text-right">
+        <%= form.text_field :cost_rate,
+                        value: money_as_value(form.object.cost_rate),
+                        class: "input input--underline text-right",
+                        data: {
+                          transaction_form_target: "costRate",
+                          controller: "number-input",
+                          action: "transaction-form#calculate",
+                        } %>
+      </td>
+    </tr>
 
-  <fieldset class="fieldset">
-    <legend class="fieldset-legend"><%= Transaction.human_attribute_name(:profit) %></legend>
-    <%= form.text_field :profit,
-                    value: money_as_value(form.object.profit),
-                    class: "input input-bordered w-full text-right bg-base-200",
-                    readonly: true,
-                    data: {
-                      transaction_form_target: "profit",
-                      controller: "number-input",
-                    } %>
-  </fieldset>
+    <tr>
+      <th><%= Transaction.human_attribute_name(:profit) %></th>
+      <td class="text-right">
 
-  <fieldset class="fieldset">
-    <legend class="fieldset-legend"><%= Transaction.human_attribute_name(:total) %></legend>
-    <%= form.text_field :total,
-                    value: money_as_value(form.object.total),
-                    class: "input input-bordered w-full text-right bg-base-200",
-                    readonly: true,
-                    data: {
-                      transaction_form_target: "total",
-                      controller: "number-input",
-                    } %>
-  </fieldset>
-</div>
+        <%= form.text_field :profit,
+                        value: money_as_value(form.object.profit),
+                        class: "input input--underline text-right",
+                        readonly: true,
+                        data: {
+                          transaction_form_target: "profit",
+                          controller: "number-input",
+                        } %>
+
+      </td>
+    </tr>
+  </tbody>
+</table>
