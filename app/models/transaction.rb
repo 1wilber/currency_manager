@@ -29,11 +29,11 @@ class Transaction < ApplicationRecord
 
   def display_rate
     # "1 #{source_currency} = #{rate} #{target_currency}"
-    rate
+    rate.to_s
   end
 
   def display_cost_rate
-    display_rate
+    cost_rate.to_s
   end
 
   def display_amount

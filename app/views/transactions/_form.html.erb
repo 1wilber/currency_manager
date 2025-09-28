@@ -38,8 +38,7 @@
   <div>
     <%= form.hidden_field :sender_type, value: sender.class.name %>
     <%= form.hidden_field :sender_id, value: sender.try(:id) %>
-    <%= form.hidden_field :receiver_type, value: receiver.class.name %>
-    <%= form.hidden_field :receiver_id, value: receiver.try(:id) %>
+    <%= form.hidden_field :receiver_type, value: "Customer" %>
     <%= form.hidden_field :target_currency,
                       value:
                         form.object.target_currency || current_exchange_rate.target %>

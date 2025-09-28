@@ -3,6 +3,9 @@
     <tr>
       <th><%= form.object.class.human_attribute_name(:rate) %></th>
       <td class="text-right">
+        1
+        <%= current_exchange_rate.source %>
+        =
         <%= form.text_field :rate,
                         value: money_as_value(form.object.rate),
                         class: "input input--underline text-right",
@@ -11,6 +14,7 @@
                           controller: "number-input",
                           action: "transaction-form#calculate",
                         } %>
+        <%= current_exchange_rate.target %>
 
       </td>
     </tr>
@@ -18,6 +22,9 @@
     <tr>
       <th><%= form.object.class.human_attribute_name(:cost_rate) %></th>
       <td class="text-right">
+        1
+        <%= current_exchange_rate.source %>
+        =
         <%= form.text_field :cost_rate,
                         value: money_as_value(form.object.cost_rate),
                         class: "input input--underline text-right",
@@ -26,6 +33,7 @@
                           controller: "number-input",
                           action: "transaction-form#calculate",
                         } %>
+        <%= current_exchange_rate.target %>
       </td>
     </tr>
 
@@ -42,6 +50,7 @@
                           controller: "number-input",
                         } %>
 
+        <%= current_exchange_rate.source %>
       </td>
     </tr>
   </tbody>

@@ -57,7 +57,7 @@ class TransactionsController < ApplicationController
       :source_currency,
       :target_currency,
       :rate,
-      :rate_cost,
+      :cost_rate,
       :profit,
       :total,
     )
