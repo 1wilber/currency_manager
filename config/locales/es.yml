@@ -67,7 +67,7 @@ es:
     index:
       transactions_per_day: Transacciones por día
       profit_per_day: Ganancia por día
-      title: Métricas
+      title: Dashboard
       description: Puedes ver las métricas disponibles en el sistema.
   transactions:
     edit:

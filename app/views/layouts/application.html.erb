@@ -84,20 +84,22 @@
           data-action="click->sidebar#close"
         ></label>
         <aside class="w-72 min-h-full bg-base-100 shadow-xl">
-          <div class="p-4">
-            <ul class="menu">
-              <li class="<%= controller_name == "transactions" ? "bordered" : "" %>">
-                <%= link_to Transaction.model_name.human(count: 2),
-                transactions_path,
-                class: "#{controller_name == "transactions" ? "active" : ""}" %>
-              </li>
-              <li class="<%= controller_name == "metrics" ? "bordered" : "" %>">
-                <%= link_to t("metrics.index.title"),
-                metrics_path,
-                class: "#{controller_name == "metrics" ? "active" : ""}" %>
-              </li>
-            </ul>
-          </div>
+          <ul class="menu w-full p-4">
+            <li class="<%= controller_name == "metrics" ? "bordered" : "" %>">
+              <%= link_to metrics_path,
+              class: "#{controller_name == "metrics" ? "menu-active" : ""}" do %>
+                <%= icon("home") %>
+                <%= t("metrics.index.title") %>
+              <% end %>
+            </li>
+            <li class="<%= controller_name == "transactions" ? "bordered" : "" %>">
+              <%= link_to transactions_path,
+              class: "#{controller_name == "transactions" ? "menu-active" : ""}" do %>
+                <%= icon("coin") %>
+                <%= Transaction.model_name.human(count: 2) %>
+              <% end %>
+            </li>
+          </ul>
         </aside>
       </div>
     </div>
