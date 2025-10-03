@@ -27,3 +27,17 @@
 .input.input--underline:focus {
     outline: none;
 }
+.input.input--datepicker {
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+    box-shadow: none;
+    min-width: 100px;
+    height: auto;
+    font-size: 1.25rem;
+    text-align: center;
+}
+
+.input.input--datepicker:focus {
+    outline: none;
+}

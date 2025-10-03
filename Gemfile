@@ -78,3 +78,7 @@ gem "chartkick", "~> 5.2"
 gem "groupdate", "~> 6.7"
 
 gem "cssbundling-rails", "~> 1.4"
+
+gem "draper", "~> 4.0"
+
+gem "csv", "~> 3.3"

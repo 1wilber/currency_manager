@@ -1,0 +1,19 @@
+<div class="flex justify-center gap-3 items-center">
+  <%= link_to icon("chevron-left"), prev_day_url, class: "btn btn-circle" %>
+
+  <%= form_with(url: [:transactions], method: :get, html: {class: "", data: {controller: "auto-submit"}}) do |f| %>
+    <%= f.date_field :by_range,
+                 class: "input input-bordered w-full input--datepicker",
+                 data: {
+                   text: @date_range.strftime("%B %d, %Y"),
+                   controller: "date-picker",
+                   action: "auto-submit#submit",
+                   date_picker_default_date_value: @date_range.strftime("%d/%m/%Y"),
+                 } %>
+
+  <% end %>
+
+  <%= link_to icon("chevron-right"), next_day_url, class: "btn btn-circle" %>
+</div>
+
+<%= @date_range.inspect %>

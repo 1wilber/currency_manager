@@ -1,9 +1,10 @@
 class TransactionsController < ApplicationController
   include ButtonHelper
-  before_action :set_sender, :set_receiver, only: [ :new, :edit ]
   before_action :set_date_range, only: [ :index ]
   has_scope :by_source_currency, only: [ :index ]
   has_scope :by_target_currency, only: [ :index ]
+
+  helper :transactions
 
   def index
     params[:by_source_currency] ||= current_exchange_rate.source
@@ -61,25 +62,6 @@ class TransactionsController < ApplicationController
       :profit,
       :total,
     )
-  end
-
-  def set_sender
-    sender_type = params[:sender_type]
-    sender_id = params[:sender_id]
-    return @sender = @record.sender if @record.persisted?
-    return if sender_type.blank? || sender_id.blank?
-
-    @sender = sender_type.constantize.find(params[:sender_id])
-  end
-
-  def set_receiver
-    receiver_type = params[:receiver_type]
-    receiver_id = params[:receiver_id]
-
-    return @receiver = @record.receiver if @record.persisted?
-    return if receiver_type.blank? || receiver_id.blank?
-
-    @receiver = receiver_type.constantize.find(params[:receiver_id])
   end
 
   def set_record
