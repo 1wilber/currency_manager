@@ -1,95 +1,99 @@
-<%= render "shared/form_errors", errors: @record.errors.full_messages %>
+<div class="card">
+  <div class="card-body bg-base-100">
+    <%= render "shared/form_errors", errors: @record.errors.full_messages %>
 
-<%= form_for transaction, local: true, html: {data: {controller: "transaction-form"}, class: "card"} do |form| %>
-  <fieldset class="fieldset">
-    <%= form.label :sender_id,
-               model_class.human_attribute_name(:sender_id),
-               class: "fieldset-legend" %>
+    <%= form_for transaction, local: true, html: {data: {controller: "transaction-form"}, class: "card"} do |form| %>
+      <fieldset class="fieldset">
+        <%= form.label :sender_id,
+                   model_class.human_attribute_name(:sender_id),
+                   class: "fieldset-legend" %>
 
-    <%= form.select :sender_id,
-                Bank
-                  .order("LOWER(name) ASC")
-                  .where(currency: current_exchange_rate.target)
-                  .map { |bank| [bank.display_name, bank.id] },
-                { prompt: t("select_bank"), selected: @sender.try(:id) },
-                {
-                  class: "select select-bordered w-full",
-                  data: {
-                    controller: "select",
-                    action: "auto-submit#submit",
-                  },
-                  required: true,
-                } %>
-  </fieldset>
-
-  <fieldset class="fieldset">
-    <legend class="fieldset-legend"><%= model_class.human_attribute_name(:receiver_id) %></legend>
-    <%= form.select :receiver_id,
-                Customer.all.map { |customer| [customer.name, customer.id] },
-                { prompt: t("select_customer"), selected: @receiver.try(:id) },
-                {
-                  class: "select select-bordered w-full",
-                  data: {
-                    action: "auto-submit#submit",
-                  },
-                  required: true,
-                } %>
-  </fieldset>
-  <div>
-    <%= form.hidden_field :sender_type, value: sender.class.name %>
-    <%= form.hidden_field :sender_id, value: sender.try(:id) %>
-    <%= form.hidden_field :receiver_type, value: "Customer" %>
-    <%= form.hidden_field :target_currency,
-                      value:
-                        form.object.target_currency || current_exchange_rate.target %>
-
-    <%= form.hidden_field :source_currency,
-                      value:
-                        form.object.source_currency || current_exchange_rate.source %>
-  </div>
-
-  <fieldset class="fieldset">
-    <legend class="fieldset-legend"><%= form.object.class.human_attribute_name(:amount) %></legend>
-    <div class="input w-full">
-      <%= dollar_sign %>
-      <%= form.text_field :amount,
-                      value: money_as_value(transaction.send(:amount)),
-                      class: "grow",
-                      placeholder: "0.00",
+        <%= form.select :sender_id,
+                    Bank
+                      .order("LOWER(name) ASC")
+                      .where(currency: current_exchange_rate.target)
+                      .map { |bank| [bank.display_name, bank.id] },
+                    { prompt: t("select_bank"), selected: @sender.try(:id) },
+                    {
+                      class: "select select-bordered w-full",
                       data: {
-                        transaction_form_target: "amount",
-                        controller: "number-input",
-                        action: "transaction-form#calculate",
-                      } %>
-      <span class="w-8">
-        <%= render_currency_flag(current_exchange_rate.source) %>
-      </span>
+                        controller: "select",
+                        action: "auto-submit#submit",
+                      },
+                      required: true,
+                    } %>
+      </fieldset>
 
-    </div>
-  </fieldset>
-
-  <fieldset class="fieldset">
-    <legend class="fieldset-legend"><%= Transaction.human_attribute_name(:total) %></legend>
-    <div class="input w-full">
-      <%= dollar_sign %>
-      <%= form.text_field :total,
-                      value: money_as_value(form.object.total),
-                      class: "grow",
-                      readonly: true,
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend"><%= model_class.human_attribute_name(:receiver_id) %></legend>
+        <%= form.select :receiver_id,
+                    Customer.all.map { |customer| [customer.name, customer.id] },
+                    { prompt: t("select_customer"), selected: @receiver.try(:id) },
+                    {
+                      class: "select select-bordered w-full",
                       data: {
-                        transaction_form_target: "total",
-                        controller: "number-input",
-                      } %>
+                        action: "auto-submit#submit",
+                      },
+                      required: true,
+                    } %>
+      </fieldset>
+      <div>
+        <%= form.hidden_field :sender_type, value: "Bank" %>
+        <%= form.hidden_field :receiver_type, value: "Customer" %>
+        <%= form.hidden_field :target_currency,
+                          value:
+                            form.object.target_currency || current_exchange_rate.target %>
 
-      <span class="w-8">
-        <%= render_currency_flag(current_exchange_rate.target) %>
-      </span>
-    </div>
-  </fieldset>
+        <%= form.hidden_field :source_currency,
+                          value:
+                            form.object.source_currency || current_exchange_rate.source %>
+      </div>
 
-  <%= render "summary", form: %>
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend"><%= form.object.class.human_attribute_name(:amount) %></legend>
+        <div class="input w-full">
+          <%= dollar_sign %>
+          <%= form.text_field :amount,
+                          value: money_as_value(transaction.send(:amount)),
+                          class: "grow",
+                          placeholder: "0.00",
+                          data: {
+                            transaction_form_target: "amount",
+                            controller: "number-input",
+                            action: "transaction-form#calculate",
+                          } %>
+          <span class="w-8">
+            <%= render_currency_flag(current_exchange_rate.source) %>
+          </span>
 
-  <div class="card-actions justify-end mt-4">
-    <%= turbo_submit(form) %>
+        </div>
+      </fieldset>
+
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend"><%= Transaction.human_attribute_name(:total) %></legend>
+        <div class="input w-full">
+          <%= dollar_sign %>
+          <%= form.text_field :total,
+                          value: money_as_value(form.object.total),
+                          class: "grow",
+                          readonly: true,
+                          data: {
+                            transaction_form_target: "total",
+                            controller: "number-input",
+                          } %>
+
+          <span class="w-8">
+            <%= render_currency_flag(current_exchange_rate.target) %>
+          </span>
+        </div>
+      </fieldset>
+
+      <%= render "summary", form: %>
+
+      <div class="card-actions justify-end mt-4">
+        <%= turbo_submit(form) %>
+      </div>
+    <% end %>
+
   </div>
-<% end %>
+</div>

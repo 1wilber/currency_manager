@@ -12,6 +12,8 @@ export default class extends Controller {
     flatpickr(this.element, {
       maxDate: "today",
       dateFormat: "d/m/Y",
+      altInput: true,
+      altFormat: "l j, F Y",
       defaultDate: this.defaultDateValue,
     });
   }

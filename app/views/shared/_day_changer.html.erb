@@ -1,4 +1,4 @@
-<div class="flex justify-center gap-3 items-center">
+<div class="flex justify-center gap-3 items-center mb-4">
   <%= link_to icon("chevron-left"), prev_day_url, class: "btn btn-circle" %>
 
   <%= form_with(url: [:transactions], method: :get, html: {class: "", data: {controller: "auto-submit"}}) do |f| %>
@@ -13,7 +13,8 @@
 
   <% end %>
 
-  <%= link_to icon("chevron-right"), next_day_url, class: "btn btn-circle" %>
+  <%= link_to icon("chevron-right"),
+  next_day_url,
+  class: "btn btn-circle",
+  disabled: @date_range == Date.today %>
 </div>
-
-<%= @date_range.inspect %>
