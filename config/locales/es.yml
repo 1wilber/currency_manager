@@ -45,6 +45,9 @@ es:
         one: Cliente
         other: Clientes
     attributes:
+      user:
+        email_address: Correo
+        password: Contraseña
       customer:
         first_name: Nombre
         last_name: Apellido

@@ -36,50 +36,42 @@
   </div>
 <% end %>
 
-<%= content_for(:page_title) { t(".title") } %>
-<%= content_for(:page_description) { t(".description") } %>
-
-<div class="max-w-md mx-auto">
-  <div class="card bg-base-100 shadow-xl">
+<div class="card bg-base-100 shadow-sm">
     <div class="card-body">
-      <%= form_with url: session_path, html: {class: "space-y-4"} do |form| %>
-        <fieldset class="fieldset">
-          <legend class="fieldset-legend">Datos de acceso</legend>
-
-          <label class="label" for="email_address">
-            <span class="label-text"><%= t("forms.users.placeholders.email") %></span>
-          </label>
-          <%= form.email_field :email_address,
-                           id: "email_address",
-                           required: true,
-                           autofocus: true,
-                           autocomplete: "username",
-                           placeholder: t("forms.users.placeholders.email"),
-                           value: params[:email_address],
-                           class: "input input-bordered w-full" %>
-
-          <label class="label" for="password">
-            <span class="label-text"><%= t("forms.users.placeholders.password") %></span>
-          </label>
-          <%= form.password_field :password,
-                              id: "password",
-                              required: true,
-                              autocomplete: "current-password",
-                              placeholder: t("forms.users.placeholders.password"),
-                              maxlength: 72,
-                              class: "input input-bordered w-full" %>
-
-          <div class="card-actions justify-end mt-6">
-            <%= form.submit t(:sign_in), class: "btn btn-primary" %>
-          </div>
-        </fieldset>
-      <% end %>
-
-      <div class="divider"></div>
 
       <div class="text-center">
-        <%= link_to t(:forgot_password), new_password_path, class: "link link-primary" %>
+        <h1 class="text-3xl font-bold text-base-content">
+          <%= t('.title') %>
+        </h1>
+        <p class="text-base-content/70 mt-1">
+          <%= t('.description') %>
+
+        </p>
       </div>
+    <%= form_with url: session_path, html: {class: "space-y-4"} do |form| %>
+        <fieldset class="fieldset">
+
+        <%= form.label :email_address, User.human_attribute_name(:email_address), class: "fieldset-legend"  %>
+        <%= form.email_field :email_address,
+                        required: true,
+                        autofocus: true,
+                        placeholder: t("forms.users.placeholders.email"),
+                        value: params[:email_address],
+                        class: "input w-full" %>
+
+        <%= form.label :password, User.human_attribute_name(:password), class: "fieldset-legend"  %>
+        <%= form.password_field :password,
+                            id: "password",
+                            required: true,
+                            autocomplete: "current-password",
+                            placeholder: t("forms.users.placeholders.password"),
+                            maxlength: 72,
+                            class: "input input-bordered w-full" %>
+
+        <div class="card-actions justify-end mt-6">
+            <%= form.submit t(:sign_in), class: "btn btn-primary" %>
+        </div>
+        </fieldset>
+    <% end %>
     </div>
-  </div>
 </div>

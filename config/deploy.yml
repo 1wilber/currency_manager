@@ -35,6 +35,7 @@ registry:
 env:
   secret:
     - RAILS_MASTER_KEY
+    - POSTGRES_PASSWORD
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.
     # When you start using multiple servers, you should split out job processing to a dedicated machine.
@@ -93,14 +94,13 @@ accessories:
     image: postgres:16-alpine
     host: cdp.garciab.cloud
     port: "127.0.0.1:5432:5432"
-    # Change to 3306 to expose port to the world instead of just local network.
     env:
       clear:
         POSTGRES_USER: currency_manager
         POSTGRES_DB: currency_manager_production
       secret:
         - POSTGRES_PASSWORD
-    directories:
+    volumes:
       - "currency_manager_pg_data:/var/lib/postgresql/data"
 #   redis:
 #     image: redis:7.0

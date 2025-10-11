@@ -1,6 +1,13 @@
 @import "./flatpickr.min.css";
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+    themes: light --default;
+}
+
+html,
+body {
+    height: 100%;
+}
 
 .table.table--compact {
     tr {
