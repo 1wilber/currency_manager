@@ -85,7 +85,8 @@ production:
     <<: *default
     database: currency_manager_production
     username: currency_manager
-    password: <%= ENV["CURRENCY_MANAGER_DATABASE_PASSWORD"] %>
+    password: <%= ENV["POSTGRES_PASSWORD"] %>
+    host: currency_manager-db
   cache:
     <<: *primary_production
     database: currency_manager_production_cache
