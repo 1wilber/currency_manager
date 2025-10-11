@@ -2,25 +2,7 @@
   <%= t(".title") %>
 <% end %>
 
-<%= content_for :page_description do %>
-  <%= t(".description") %>
-<% end %>
-
 <%= content_for :page_actions do %>
-  <div class="flex flex-col gap-3">
-    <%= render partial: "shared/day_changer" %>
-    <div class="flex flex-col md:flex-row md:gap-3 md:justify-end">
-      <%= icon_link t("new"), %i[new transaction], icon: "plus", class: "btn btn-primary" %>
-
-      <%= icon_link t("edit_bank_balances"),
-      %i[bank_balances],
-      icon: "edit",
-      class: "btn btn-outline",
-      data: {
-        turbo_frame: :modal,
-      } %>
-    </div>
-  </div>
 <% end %>
 
 <div class="stats shadow bg-base-100 w-full mb-6">
