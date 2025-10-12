@@ -1,0 +1,19 @@
+<%= content_for(:page_title) { Bank.model_name.human(count: 2)} %>
+
+<div class="card bg-base-100 shadow-sm">
+	<div class="card-body">
+    	<div class="overflow-x-auto">
+            <table class="table table-zebra">
+              <thead>
+                <tr>
+                  <th><%= t(:id) %></th>
+                  <th><%= Bank.human_attribute_name(:name) %></th>
+                  <th></th>
+                </tr>
+
+              </thead>
+               	<%= render @collection %>
+            </table>
+    	</div>
+	</div>
+</div>

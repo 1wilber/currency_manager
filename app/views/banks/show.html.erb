@@ -1,0 +1,18 @@
+<%= content_for(:page_title) { @bank.name} %>
+
+<div class="card  bg-base-100 shadow-sm">
+    <div class="card-body">
+        <%= render "form", bank: @bank %>
+    </div>
+</div>
+
+<div role="tablist" class="tabs tabs-box">
+  <a role="tab" class="tab">Tab 1</a>
+  <a role="tab" class="tab tab-active">Tab 2</a>
+  <a role="tab" class="tab">Tab 3</a>
+</div>
+
+<div class="card bg-base-100 shadow-sm">
+    <%= render partial: "transactions/list", locals: {transactions: @bank.outgoings.recents} %>
+
+</div>

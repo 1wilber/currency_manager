@@ -99,6 +99,14 @@
                 <%= Transaction.model_name.human(count: 2) %>
               <% end %>
             </li>
+
+            <li class="<%= controller_name == "bank_balances" ? "bordered" : "" %>">
+              <%= link_to banks_path,
+              class: "#{controller_name == "banks" ? "menu-active" : ""}" do %>
+                <%= icon("bank") %>
+                <%= Bank.model_name.human(count: 2) %>
+              <% end %>
+            </li>
           </ul>
         </aside>
       </div>

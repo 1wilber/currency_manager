@@ -31,4 +31,26 @@
   </div>
 </div>
 
+<div class="card">
+  <div class="card-body bg-base-100">
+    <div class="flex flex-col gap-3">
+      <% if @date_range %>
+        <%= render partial: "shared/day_changer" %>
+      <% end %>
+      <div class="flex flex-col md:flex-row gap-3 md:justify-end">
+        <%= icon_link t("new"), %i[new transaction], icon: "plus", class: "btn btn-primary" %>
+
+        <%= icon_link t("edit_bank_balances"),
+        %i[bank_balances],
+        icon: "edit",
+        class: "btn btn-outline",
+        disabled: true,
+        data: {
+          turbo_frame: :modal,
+        } %>
+      </div>
+    </div>
+  </div>
+</div>
+
 <%= render "list", transactions: @collection %>

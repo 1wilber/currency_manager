@@ -3,6 +3,9 @@ class Transaction < ApplicationRecord
   belongs_to :sender, polymorphic: true
   belongs_to :receiver, polymorphic: true
 
+  scope :total, -> { sum(:total) }
+  scope :recents, -> { order(id: :desc) }
+
   scope :by_range, ->(range) do
     from, to = range
     to ||= from.end_of_day
