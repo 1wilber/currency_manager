@@ -82,3 +82,5 @@ gem "cssbundling-rails", "~> 1.4"
 gem "draper", "~> 4.0"
 
 gem "csv", "~> 3.3"
+
+gem "simple_form", "~> 5.3"
