@@ -1,18 +1,128 @@
-<%= content_for(:page_title) { @bank.name} %>
+<%= content_for(:page_title) { @bank.name } %>
 
-<div class="card  bg-base-100 shadow-sm">
-    <div class="card-body">
-        <%= render "form", bank: @bank %>
-    </div>
+<div>
+  <button
+    onclick="new_bank_transaction.showModal()"
+    class="btn btn-success btn-xs"
+  ><%= t(:add_funds) %></button>
+  <dialog id="new_bank_transaction" class="modal">
+    <%= simple_form_for(@bank.incomings.new, url: bank_transactions_path(@bank), html: {class: "modal-box"}) do |f| %>
+
+      <div class="flex gap-3">
+        <button class="btn btn-circle btn-info btn-soft">
+          <%= icon("dollar") %>
+        </button>
+        <div class="flex-1">
+          <h3 class="text-lg font-bold"><%= t(:add_funds) %></h3>
+          <small class="label">Ingresa el monto que deseas agregar a tu cuenta bancaria</small>
+        </div>
+      </div>
+
+      <%= f.hidden_field :rate, value: 1 %>
+      <%= f.hidden_field :cost_rate, value: 1 %>
+      <%= f.hidden_field :sender_id, value: Bank.default.id %>
+      <%= f.hidden_field :sender_type, value: "Bank" %>
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend"><%= Transaction.human_attribute_name(:amount) %></legend>
+        <div class="input w-full">
+          <%= dollar_sign %>
+          <%= f.text_field :amount, class: "grow", data: { controller: "number-input" } %>
+
+          <span class="w-8">
+            <%= render_currency_flag(@bank.currency) %>
+          </span>
+        </div>
+      </fieldset>
+
+      <div class="modal-action">
+        <%= f.submit t(:add), class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </dialog>
 </div>
 
-<div role="tablist" class="tabs tabs-box">
-  <a role="tab" class="tab">Tab 1</a>
-  <a role="tab" class="tab tab-active">Tab 2</a>
-  <a role="tab" class="tab">Tab 3</a>
+<div class="stats w-full bg-base-100 border-base-300 border mb-4">
+  <%= render "shared/stat",
+  value:
+    raw(
+      (@total_profit.positive? ? "+" : "-") +
+        number_to_currency(@total_profit, precision: 0, unit: @bank.currency),
+    ),
+  title: t(:profit),
+  figure: {
+    class: "text-success",
+    icon: icon("trending-up"),
+  } %>
+
+  <%= render "shared/stat",
+  value:
+    number_to_currency(
+      @transactions.sum(:total),
+      precision: 0,
+      unit: current_exchange_rate.target,
+    ),
+  title: Transaction.human_attribute_name(:total),
+  figure: {
+    class: "text-info",
+    icon: icon("dollar"),
+  } %>
+
+  <%= render "shared/stat",
+  value:
+    number_to_currency(
+      @transactions.sum(:amount),
+      precision: 0,
+      unit: @bank.currency,
+    ),
+  title: Transaction.human_attribute_name(:amount),
+  figure: {
+    class: "text-accent",
+    icon: icon("dollar"),
+  } %>
 </div>
 
 <div class="card bg-base-100 shadow-sm">
-    <%= render partial: "transactions/list", locals: {transactions: @bank.outgoings.recents} %>
+  <div class="card-body">
+    <%= @transactions.each do |transaction| %>
+      <div class=" bg-base-100 border border-base-300 p-4 rounded-2xl flex ">
+        <div class="flex-1 flex flex-col gap-2">
+          <div>
+            <div class="badge badge-ghost bg-slate-200 text-xs font-mono">#<%= transaction.id %></div>
+            <div class="badge badge-neutral badge-outline border-base-300 text-xs"><%= transaction.customer.name %></div>
+          </div>
+          <p class="text-xs label">
+            <%= l(transaction.created_at, format: "%d %b %Y, %H:%M") %>
+          </p>
 
+          <div class="grid grid-cols-2">
+            <div>
+              <p class="text-xs label">
+                <%= Transaction.human_attribute_name(:amount) %>
+              </p>
+              <p class="font-semibold">
+                <%= transaction.display_amount %>
+              </p>
+            </div>
+
+            <div>
+              <p class="text-xs label">
+                <%= Transaction.human_attribute_name(:profit) %>
+              </p>
+              <p
+                class="font-semibold <%= transaction.profit.positive? ? "text-success" : "" %>"
+              >
+                <%= transaction.profit.positive? ? "+" : "-" %><%= transaction.display_profit %>
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="flex justify-end">
+          <%= link_to "Edit", edit_transaction_path(transaction) %>
+        </div>
+      </div>
+
+    <% end %>
+  </div>
 </div>

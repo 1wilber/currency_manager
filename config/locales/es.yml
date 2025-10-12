@@ -1,4 +1,8 @@
 es:
+  add: Agregar
+  add_funds: Agregar saldo
+  balance: Saldo
+  editing: Editando %{resource_name}
   select_bank: Seleccione un banco
   select_customer: Seleccione un cliente
   edit_bank_balances: Editar balance
@@ -45,6 +49,11 @@ es:
         one: Cliente
         other: Clientes
     attributes:
+      bank:
+        name: Nombre
+        currency: Moneda
+        outgoings: Salidas
+        incomings: Entradas
       user:
         email_address: Correo
         password: Contraseña
@@ -60,8 +69,8 @@ es:
         target_currency: "Moneda destino"
         rate: Tasa
         cost_rate: Tasa proveedor
-        amount: "Pesos recibidos"
-        total: "Bs Pagados"
+        amount: "Monto recibido"
+        total: "Monto enviado"
         profit: "Ganancia"
   metrics:
     today_summary:

@@ -1,0 +1,16 @@
+<% figure ||= { class: "", icon: nil } %>
+<% value_css ||= "" %>
+<% figure_css = ["stat-figure", figure[:class]].join(" ") %>
+
+<div class="stat">
+  <% if figure[:icon].present? %>
+    <div class="<%= figure_css %>">
+      <%= figure[:icon] %>
+    </div>
+  <% end %>
+
+  <div class="stat-title"><%= title %></div>
+  <div class="stat-value <%= value_css %>">
+    <%= value %>
+  </div>
+</div>

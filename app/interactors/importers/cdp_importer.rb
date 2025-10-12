@@ -46,19 +46,21 @@ module Importers
     def build_transactions(transactions, date)
       banks = Bank.all
       customers = Customer.all
+      sender = Bank.ves_default
 
       transactions.map do |transaction|
-        sender = banks.find { |bank| bank.name == transaction[:sender_name] }
-        receiver = customers.find { |customer| customer.first_name == transaction[:receiver_name] }
+        receiver = banks.find { |bank| bank.name == transaction[:sender_name] }
+        customer = customers.find { |customer| customer.first_name == transaction[:receiver_name] }
 
         Transaction.new(
-          sender: sender,
-          receiver: receiver,
+          sender:,
+          receiver:,
+          customer:,
           amount: transaction[:amount],
           rate: transaction[:rate],
           cost_rate: transaction[:cost_rate],
-          source_currency: "CLP",
-          target_currency: sender.currency,
+          source_currency: receiver.currency,
+          target_currency: "VES",
           created_at: date
         )
       end
@@ -66,7 +68,7 @@ module Importers
 
     def build_senders(sender_names)
       bank_names = Bank.where(name: sender_names).pluck(:name)
-      currency = "VES"
+      currency = "CLP"
 
       new_sender_names = sender_names.reject do |name|
         bank_names.include?(name)

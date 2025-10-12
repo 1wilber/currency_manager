@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/1wilber/currency_manager#readme",
   "dependencies": {
+    "@fontsource-variable/roboto-mono": "^5.2.8",
     "@tailwindcss/cli": "^4.1.13",
     "daisyui": "^5.1.9",
     "tailwindcss": "^4.1.13"

@@ -5,6 +5,12 @@ class Bank < ApplicationRecord
   has_many :outgoings, as: :sender, class_name: "Transaction"
   has_many :incomings, as: :receiver, class_name: "Transaction"
 
+  scope :default, -> { where(name: "default").first  }
+
+  def self.ves_default
+    Bank.find_or_create_by(name: "VES", currency: "VES")
+  end
+
 
   def balance
     incomings.sum(:total) - outgoings.sum(:total)

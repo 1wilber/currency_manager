@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_08_002121) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_12_055657) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
-
 
   create_table "banks", force: :cascade do |t|
     t.string "name"
@@ -53,6 +52,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_08_002121) do
     t.bigint "sender_id", null: false
     t.string "receiver_type", null: false
     t.bigint "receiver_id", null: false
+    t.bigint "customer_id", null: false
+    t.index ["customer_id"], name: "index_transactions_on_customer_id"
     t.index ["receiver_type", "receiver_id"], name: "index_transactions_on_receiver"
     t.index ["sender_type", "sender_id"], name: "index_transactions_on_sender"
   end
@@ -68,4 +69,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_08_002121) do
   end
 
   add_foreign_key "sessions", "users"
+  add_foreign_key "transactions", "customers"
 end

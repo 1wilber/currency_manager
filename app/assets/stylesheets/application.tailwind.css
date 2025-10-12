@@ -1,7 +1,12 @@
+@import "@fontsource-variable/roboto-mono/index.css";
 @import "./flatpickr.min.css";
 @import "tailwindcss";
 @plugin "daisyui" {
     themes: light --default;
+}
+.font-mono {
+    font-family: "Roboto Mono Variable", monospace;
+    letter-spacing: 0.04em;
 }
 
 html,
@@ -43,6 +48,16 @@ body {
     height: auto;
     font-size: 1.25rem;
     text-align: center;
+}
+
+.fieldset-legend {
+    justify-content: flex-start;
+    gap: 0.25rem;
+}
+
+abbr[title="required"] {
+    color: red;
+    text-decoration: none;
 }
 
 .input.input--datepicker:focus {

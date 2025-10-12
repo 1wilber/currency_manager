@@ -1,2 +1,6 @@
-<%= form_for(bank) do |f| %>
+<%= simple_form_for(bank) do |f| %>
+  <%= f.input :name %>
+  <%= f.input :currency, disabled: true %>
+  <div class="mb-2"></div>
+  <%= f.submit t(:save), class: "btn btn-primary" %>
 <% end %>

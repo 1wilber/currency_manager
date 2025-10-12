@@ -1,9 +1,6 @@
-class BankDecorator < Draper::Decorator
+class BankTransactionDecorator < Draper::Decorator
   delegate_all
 
-  def display_balance
-    "#{currency} #{h.number_to_currency(balance, unit: "$", precision: 0)}"
-  end
   # Define presentation-specific methods here. Helpers are accessed through
   # `helpers` (aka `h`). You can override attributes, for example:
   #
@@ -12,4 +9,5 @@ class BankDecorator < Draper::Decorator
   #       object.created_at.strftime("%a %m/%d/%y")
   #     end
   #   end
+
 end

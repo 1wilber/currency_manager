@@ -2,9 +2,17 @@ class Transaction < ApplicationRecord
   has_currency_fields :amount, :total, :profit, :rate, :cost_rate
   belongs_to :sender, polymorphic: true
   belongs_to :receiver, polymorphic: true
+  belongs_to :customer
+
+  before_validation :set_currencies
 
   scope :total, -> { sum(:total) }
   scope :recents, -> { order(id: :desc) }
+
+  def set_currencies
+    self.source_currency ||= sender.try(:currency)
+    self.target_currency ||= receiver.try(:currency)
+  end
 
   scope :by_range, ->(range) do
     from, to = range

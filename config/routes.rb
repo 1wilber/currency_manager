@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  resources :banks, only: [ :index, :show ]
+  resources :banks, only: [ :index, :show ] do
+    resources :transactions, only: [ :create ], controller: :bank_transactions
+  end
   resources :metrics, only: [ :index ]
   resource :session
   resources :passwords, param: :token
