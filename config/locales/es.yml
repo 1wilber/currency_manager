@@ -1,4 +1,5 @@
 es:
+  transactions_count: "%{count} transacciones registradas"
   add: Agregar
   add_funds: Agregar saldo
   balance: Saldo

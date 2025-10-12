@@ -83,7 +83,16 @@
 
 <div class="card bg-base-100 shadow-sm">
   <div class="card-body">
-    <%= @transactions.each do |transaction| %>
+    <div class="prose">
+      <h3 class="flex items-center gap-1 mb-0">
+        <%= icon("transfer") %>
+        <%= Transaction.model_name.human(count: 2) %>
+      </h3>
+
+      <p class="label"><%= t(:transactions_count, count: @transactions.count) %></p>
+    </div>
+
+    <% @transactions.each do |transaction| %>
       <div class=" bg-base-100 border border-base-300 p-4 rounded-2xl flex ">
         <div class="flex-1 flex flex-col gap-2">
           <div>
@@ -119,7 +128,7 @@
         </div>
 
         <div class="flex justify-end">
-          <%= link_to "Edit", edit_transaction_path(transaction) %>
+          <%= link_to icon("edit"), edit_transaction_path(transaction) %>
         </div>
       </div>
 

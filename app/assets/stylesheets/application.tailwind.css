@@ -1,9 +1,11 @@
 @import "@fontsource-variable/roboto-mono/index.css";
 @import "./flatpickr.min.css";
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 @plugin "daisyui" {
     themes: light --default;
 }
+
 .font-mono {
     font-family: "Roboto Mono Variable", monospace;
     letter-spacing: 0.04em;
