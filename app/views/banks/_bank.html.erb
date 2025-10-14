@@ -1,10 +1,16 @@
 <tr>
-    <td><%= bank.id %></td>
-    <td>
-      <%= link_to bank do %>
-        <%= bank.display_name %>
-      <% end %>
-    </td>
-    <td><%= bank.balance %></td>
+  <td><%= bank.id %></td>
+  <td>
+    <%= link_to bank do %>
+      <%= bank.name %>
+    <% end %>
+  </td>
+  <td>
+    <div class="flex items-center gap-2">
+      <span class="w-4 h-4"><%= render_currency_flag(bank.currency) %></span>
+      <%= bank.currency %>
+    </div>
+  </td>
+  <td><%= bank.balance %></td>
 
 </tr>
