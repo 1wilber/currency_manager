@@ -110,20 +110,13 @@ bin/rails db:rollback        # Rollback last migration
 - `TransactionsController` - CRUD for transactions, date range filtering
 - `BanksController` - Bank listing and details
 - `BankTransactionsController` - Nested transactions under banks
+- `BankBalancesController` - Bank balance snapshots listing
 - `MetricsController` - Dashboard and reporting
-- `Madmin::*` - Admin interface controllers
 
 **Authentication**:
 - `SessionsController` - Login/logout
 - `PasswordsController` - Password reset
 - `Authentication` concern - shared authentication logic
-
-### Admin Interface
-
-Uses Madmin gem (`app/madmin/`) for administrative features:
-- Custom fields: `CurrencyField`, `LocalTimeField`, `DecimalField`
-- Resources: `BankResource`, `TransactionResource`, `CustomerResource`
-- Custom calculate endpoint for transactions at `madmin/transactions/calculate`
 
 ### Helpers
 
