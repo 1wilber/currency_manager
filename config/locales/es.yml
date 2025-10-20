@@ -49,6 +49,9 @@ es:
       customer:
         one: Cliente
         other: Clientes
+      bank_balance:
+        one: Saldo Bancario
+        other: Saldos Bancarios
     attributes:
       bank:
         name: Nombre
@@ -73,6 +76,15 @@ es:
         amount: "Monto recibido"
         total: "Monto enviado"
         profit: "Ganancia"
+      bank_balance:
+        code: Código
+        amount: Monto
+        balance: Balance
+        rate: Tasa
+        description: Descripción
+        percentage_used: Utilizado
+        created_at: Creado
+        updated_at: Actualizado
   metrics:
     today_summary:
       title: Resumen del día
@@ -99,3 +111,9 @@ es:
     new:
       title: Iniciar Sesión
       description: Inicia sesión para acceder a la aplicación.
+
+  bank_balances:
+    list:
+      description: Administra los saldos disponibles de este banco
+      no_description: Sin descripción
+      empty_state: No hay saldos bancarios registrados. Crea uno usando el botón "Crear Saldo".
