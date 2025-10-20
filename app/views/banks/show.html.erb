@@ -100,8 +100,13 @@
         <%= f.submit "Crear Saldo", class: "btn btn-primary" %>
       </div>
     <% end %>
-  </dialog>
-</div>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button>close</button>
+    </form>
+</dialog>
+
+<%= render "bank_balances/list", bank_balances: @bank.bank_balances, bank: @bank %>
 
 <div class="stats w-full bg-base-100 border-base-300 border mb-4">
   <%= render "shared/stat",

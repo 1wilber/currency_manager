@@ -13,6 +13,6 @@ before_action :set_bank, only: [ :show ]
   private
 
   def set_bank
-    @bank = Bank.includes(:incomings).find(params[:id]).decorate
+    @bank = Bank.includes(:incomings, :bank_balances).find(params[:id]).decorate
   end
 end
