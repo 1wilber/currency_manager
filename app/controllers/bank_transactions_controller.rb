@@ -16,6 +16,7 @@ class BankTransactionsController < ApplicationController
   def set_bank
     @bank = Bank.find(params[:bank_id])
   end
+
   def transaction_params
     params.require(:transaction).permit(
       :sender_type,

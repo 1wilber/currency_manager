@@ -1,8 +1,13 @@
 class Transaction < ApplicationRecord
   has_currency_fields :amount, :total, :profit, :rate, :cost_rate
+
+  has_many :bank_balance_transactions, dependent: :destroy
+  has_many :bank_balances, through: :bank_balance_transactions
+
   belongs_to :sender, polymorphic: true
   belongs_to :receiver, polymorphic: true
   belongs_to :customer
+
 
   before_validation :set_currencies
 

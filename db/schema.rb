@@ -10,9 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_12_055657) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_15_022546) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "bank_balance_transactions", force: :cascade do |t|
+    t.bigint "bank_balance_id", null: false
+    t.bigint "transaction_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bank_balance_id"], name: "index_bank_balance_transactions_on_bank_balance_id"
+    t.index ["transaction_id"], name: "index_bank_balance_transactions_on_transaction_id"
+  end
+
+  create_table "bank_balances", force: :cascade do |t|
+    t.bigint "bank_id", null: false
+    t.float "amount", default: 0.0
+    t.float "rate", default: 0.0
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bank_id"], name: "index_bank_balances_on_bank_id"
+  end
 
   create_table "banks", force: :cascade do |t|
     t.string "name"
@@ -68,6 +87,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_12_055657) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  add_foreign_key "bank_balance_transactions", "bank_balances"
+  add_foreign_key "bank_balance_transactions", "transactions"
+  add_foreign_key "bank_balances", "banks"
   add_foreign_key "sessions", "users"
   add_foreign_key "transactions", "customers"
 end

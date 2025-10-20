@@ -6,14 +6,6 @@ Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
   resources :bank_balances, only: [ :index ]
-  draw :madmin
-  namespace :madmin do
-    resources :transactions, only: [] do
-      collection do
-        post :calculate
-      end
-    end
-  end
   resources :transactions, except: [ :show ]
 
   root to: "transactions#index"

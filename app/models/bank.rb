@@ -4,6 +4,7 @@ class Bank < ApplicationRecord
 
   has_many :outgoings, as: :sender, class_name: "Transaction"
   has_many :incomings, as: :receiver, class_name: "Transaction"
+  has_many :bank_balances, dependent: :destroy
 
   scope :default, -> { where(name: "default").first  }
 

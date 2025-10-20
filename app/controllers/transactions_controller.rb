@@ -16,6 +16,10 @@ class TransactionsController < ApplicationController
     @total = Money.new(@collection.sum(:total), current_exchange_rate.target).format(symbol: "$")
   end
 
+  def new
+    @record = model_class.new
+  end
+
   def create
     @record = Transaction.new(transaction_params)
 

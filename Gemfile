@@ -57,8 +57,6 @@ group :development do
   gem "web-console"
 end
 
-gem "madmin", "~> 2.1"
-
 gem "name_of_person", "~> 1.1"
 
 gem "rails-i18n", "~> 8.0"
