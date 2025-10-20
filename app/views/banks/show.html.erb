@@ -1,10 +1,13 @@
 <%= content_for(:page_title) { @bank.name } %>
 
-<div>
+<div class="flex gap-2">
   <button
     onclick="new_bank_transaction.showModal()"
     class="btn btn-success btn-xs"
   ><%= t(:add_funds) %></button>
+
+  <button onclick="new_bank_balance.showModal()" class="btn btn-primary btn-xs">Crear Saldo</button>
+  <!-- Modal para agregar fondos -->
   <dialog id="new_bank_transaction" class="modal">
     <%= simple_form_for(@bank.incomings.new, url: bank_transactions_path(@bank), html: {class: "modal-box"}) do |f| %>
 
@@ -36,6 +39,65 @@
 
       <div class="modal-action">
         <%= f.submit t(:add), class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </dialog>
+  <!-- Modal para crear saldo bancario -->
+  <dialog id="new_bank_balance" class="modal">
+    <%= simple_form_for([@bank, @bank.bank_balances.new], html: {class: "modal-box"}) do |f| %>
+
+      <div class="flex gap-3 mb-4">
+        <button type="button" class="btn btn-circle btn-primary btn-soft">
+          <%= icon("dollar") %>
+        </button>
+        <div class="flex-1">
+          <h3 class="text-lg font-bold">Crear Saldo Bancario</h3>
+          <small class="label">Registra un nuevo saldo disponible para este banco</small>
+        </div>
+      </div>
+
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">Monto</legend>
+        <div class="input w-full">
+          <%= dollar_sign %>
+          <%= f.input_field :amount, class: "grow", data: { controller: "number-input" } %>
+          <span class="w-8">
+            <%= render_currency_flag(@bank.currency) %>
+          </span>
+        </div>
+      </fieldset>
+
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">Tasa de Cambio</legend>
+        <%= f.input :rate,
+                label: false,
+                input_html: {
+                  class: "input input-bordered w-full",
+                  data: {
+                    controller: "number-input",
+                  },
+                } %>
+        <small class="label">Ejemplo: 1 CLP = X
+          <%= @bank.currency %></small>
+      </fieldset>
+
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">Descripción (opcional)</legend>
+        <%= f.input :description,
+                as: :text,
+                label: false,
+                input_html: {
+                  class: "textarea textarea-bordered w-full",
+                  rows: 3,
+                  placeholder: "Ingresa una descripción para este saldo...",
+                } %>
+      </fieldset>
+
+      <div class="modal-action">
+        <form method="dialog">
+          <button class="btn">Cancelar</button>
+        </form>
+        <%= f.submit "Crear Saldo", class: "btn btn-primary" %>
       </div>
     <% end %>
   </dialog>
