@@ -10,11 +10,11 @@ export default class extends Controller {
   }
 
   async calculate() {
-    const costRate = this.costRateTarget.value;
     const rate = this.rateTarget.value;
     const amount = this.amountTarget.value;
+    const costRate = this.costRateTarget.value;
 
-    const url = "/madmin/transactions/calculate";
+    const url = "/transactions/calculate";
 
     const query = new URLSearchParams([
       ["amount", amount],
@@ -28,12 +28,17 @@ export default class extends Controller {
     });
     const body = await response.json();
     const { total, profit } = body;
+    const costRateEvent = new CustomEvent("number-input:changed", {
+      detail: costRate,
+    });
     const totalEvent = new CustomEvent("number-input:changed", {
       detail: total,
     });
     const profitEvent = new CustomEvent("number-input:changed", {
       detail: profit,
     });
+
+    this.costRateTarget.dispatchEvent(costRateEvent);
     this.totalTarget.dispatchEvent(totalEvent);
     this.profitTarget.dispatchEvent(profitEvent);
   }

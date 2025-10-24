@@ -15,6 +15,7 @@ SimpleForm.setup do |config|
   # stack. The options given below are used to wrap the
   # whole input.
 
+  config.generate_additional_classes_for = []
   config.button_class = "btn"
   config.label_text = lambda { |label, required, explicit_label| "#{label} #{required}" }
 
@@ -40,6 +41,46 @@ SimpleForm.setup do |config|
     b.use :input, class: "input input-bordered w-full", error_class: "input-error", valid_class: "input-success"
 
     # Hint y error con clases de DaisyUI
+    b.use :hint, wrap_with: { tag: :span, class: "label label-text-alt text-base-content/60" }
+    b.use :error, wrap_with: { tag: :span, class: "label label-text-alt text-error" }
+  end
+
+  # Wrapper para select con DaisyUI
+  config.wrappers :daisyui_select, class: :fieldset,
+    tag: :fieldset,
+    hint_class: :label, error_class: :field_with_errors, valid_class: :field_without_errors do |b|
+    b.use :html5
+
+    b.optional :readonly
+
+    # Legend para el label principal
+    b.use :label, class: "fieldset-legend"
+
+    # Select con clases de DaisyUI (sin 'select' porque SimpleForm lo agrega automáticamente)
+    b.use :input, class: "select select-bordered w-full", error_class: "select-error", valid_class: "select-success"
+
+    # Hint y error con clases de DaisyUI
+    b.use :hint, wrap_with: { tag: :span, class: "label label-text-alt text-base-content/60" }
+    b.use :error, wrap_with: { tag: :span, class: "label label-text-alt text-error" }
+  end
+
+  # Wrapper para checkboxes con DaisyUI
+  config.wrappers :daisyui_checkbox, class: :fieldset,
+    tag: :fieldset,
+    error_class: :field_with_errors, valid_class: :field_without_errors do |b|
+    b.use :html5
+
+    # Legend para el label principal de la colección
+    b.use :label, class: "fieldset-legend"
+
+    # Wrapper para la colección de checkboxes
+    b.wrapper tag: :div, class: "flex flex-col gap-2" do |ba|
+      ba.use :input, class: "checkbox checkbox-primary",
+             wrapper_tag: :label,
+             wrapper_class: "label cursor-pointer justify-start gap-2"
+    end
+
+    # Hint y error
     b.use :hint, wrap_with: { tag: :span, class: "label label-text-alt text-base-content/60" }
     b.use :error, wrap_with: { tag: :span, class: "label label-text-alt text-error" }
   end
@@ -155,4 +196,15 @@ SimpleForm.setup do |config|
   # Defines validation classes to the input_field. By default it's nil.
   # config.input_field_valid_class = 'is-valid'
   # config.input_field_error_class = 'is-invalid'
+  config.wrapper_mappings = {
+    boolean:       :daisyui,
+    check_boxes:   :daisyui_checkbox,
+    radio_buttons: :daisyui_checkbox,
+    date:          :daisyui,
+    datetime:      :daisyui,
+    file:          :daisyui,
+    range:         :daisyui,
+    time:          :daisyui,
+    select:        :daisyui_select
+  }
 end

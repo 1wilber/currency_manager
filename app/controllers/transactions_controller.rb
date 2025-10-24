@@ -1,5 +1,6 @@
 class TransactionsController < ApplicationController
   include ButtonHelper
+  include MoneyHelper
   before_action :set_date_range, only: [ :index ]
   has_scope :by_source_currency, only: [ :index ]
   has_scope :by_target_currency, only: [ :index ]
@@ -43,6 +44,30 @@ class TransactionsController < ApplicationController
       respond_to do |format|
         format.html { render :edit, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def calculate
+    @transaction = model_class.new
+    amount = params.dig(:amount) || 0
+    rate = params.dig(:rate) || 0
+    cost_rate = params.dig(:cost_rate) || 0
+
+    @transaction = Transaction.new(amount:, rate:, cost_rate:)
+
+    if amount.present?
+      @transaction.calculate_profit
+      @transaction.calculate_total
+    end
+
+    result = {
+      amount: money_as_value(@transaction.amount),
+      profit: money_as_value(@transaction.profit),
+      total: money_as_value(@transaction.total)
+    }
+
+    respond_to do |format|
+      format.json { render json: result }
     end
   end
 

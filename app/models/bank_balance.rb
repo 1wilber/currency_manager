@@ -2,6 +2,7 @@ class BankBalance < ApplicationRecord
   belongs_to :bank
   has_many :bank_balance_transactions, dependent: :destroy
   has_many :transactions, through: :bank_balance_transactions, source: :order
+  has_currency_fields :amount, :rate
 
   def code
     "COM-#{id.to_s.rjust(3, '0')}"

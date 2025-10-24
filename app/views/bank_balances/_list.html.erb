@@ -22,11 +22,7 @@
             </tr>
           </thead>
           <tbody>
-            <%= render partial: "bank_balances/bank_balance",
-            collection: bank_balances,
-            locals: {
-              bank: bank,
-            } %>
+            <%= render bank_balances, bank: bank %>
           </tbody>
         </table>
       </div>
