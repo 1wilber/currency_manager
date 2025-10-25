@@ -4,6 +4,12 @@ class BankBalance < ApplicationRecord
   has_many :transactions, through: :bank_balance_transactions, source: :order
   has_currency_fields :amount, :rate
 
+  scope :with_balance, -> do
+    left_joins(:transactions)
+    .group("bank_balances.id")
+    .having("bank_balances.amount - COALESCE(SUM(transactions.total), 0) > 0")
+  end
+
   def code
     "COM-#{id.to_s.rjust(3, '0')}"
   end

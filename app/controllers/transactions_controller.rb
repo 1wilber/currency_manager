@@ -1,6 +1,7 @@
 class TransactionsController < ApplicationController
   include ButtonHelper
   include MoneyHelper
+
   before_action :set_date_range, only: [ :index ]
   has_scope :by_source_currency, only: [ :index ]
   has_scope :by_target_currency, only: [ :index ]
@@ -69,6 +70,12 @@ class TransactionsController < ApplicationController
     respond_to do |format|
       format.json { render json: result }
     end
+  end
+
+  def summary
+    @transaction = Transaction.new(transaction_params)
+    @transaction.calculate
+    @transaction.ensure_bank_balances
   end
 
   def model_class

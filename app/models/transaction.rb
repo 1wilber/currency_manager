@@ -40,7 +40,7 @@ class Transaction < ApplicationRecord
     where(source_currency: currency)
   end
 
-  before_save :set_total_and_profit
+  before_save :calculate
 
   with_options presence: true do
     validates :source_currency, :target_currency
@@ -93,16 +93,28 @@ class Transaction < ApplicationRecord
     (calculate_profit / amount)
   end
 
+  def calculate
+    calculate_total
+    calculate_profit
+  end
+
+  def ensure_bank_balances
+    balances = Bank.ves_default.bank_balances.with_balance
+    balance_needed = total
+    balances.each do |bank_balance|
+      next if balance_needed <= 0
+
+      balance_needed -= bank_balance.balance
+      bank_balances << bank_balance
+    end
+  end
+
   private
+
 
   def validate_balance
     available_balance = bank_balances.sum(:amount)
 
     errors.add(:base, I18n.t("errors.messages.not_enough_balance")) unless available_balance >= total
-  end
-
-  def set_total_and_profit
-    calculate_total
-    calculate_profit
   end
 end

@@ -2,7 +2,7 @@
   <div class="card-body bg-base-100">
     <%= render "shared/form_errors", errors: transaction.errors.full_messages %>
 
-    <%= simple_form_for transaction, html: {data: {controller: "transaction-form"}, class: "card"} do |f| %>
+    <%= simple_form_for transaction, url: summary_transactions_path, html: {class: "card", data:{turbo_frame: "summary_transaction"}}, method: :get do |f| %>
       <%= f.input :sender_id,
               collection:
                 [Bank.ves_default].map { |bank| [bank.display_name, bank.id] },
@@ -12,16 +12,6 @@
               collection:
                 Customer.all.map { |customer| [customer.name, customer.id] },
               prompt: :translate %>
-
-      <%= f.association :bank_balances,
-                    as: :check_boxes,
-                    collection: sender.bank_balances.order("id DESC"),
-                    label_method: :display_name,
-                    value_method: :id,
-                    input_html: {
-                      class: "checkbox checkbox-primary",
-                    },
-                    item_wrapper_class: "label cursor-pointer justify-start gap-2" %>
 
       <div>
         <%= f.hidden_field :sender_type, value: "Bank" %>
@@ -57,12 +47,11 @@
         <legend class="fieldset-legend"><%= Transaction.human_attribute_name(:total) %></legend>
         <div class="input w-full">
           <%= dollar_sign %>
-          <%= f.text_field :total,
-                       value: money_as_value(f.object.total),
+          <%= f.text_field :rate,
+                       value: money_as_value(f.object.rate),
                        class: "grow",
                        readonly: true,
                        data: {
-                         transaction_form_target: "total",
                          controller: "number-input",
                        } %>
 
@@ -72,8 +61,6 @@
         </div>
       </fieldset>
 
-      <%= render "summary", form: f %>
-
       <div class="card-actions justify-end mt-4">
         <%= turbo_submit(f) %>
       </div>
@@ -81,3 +68,5 @@
 
   </div>
 </div>
+
+<%= turbo_frame_tag :summary_transaction %>

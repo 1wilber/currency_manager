@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :bank_balances, only: [ :index ]
   resources :transactions, except: [ :show ]  do
     collection do
+      get :summary
       post :calculate
     end
   end
