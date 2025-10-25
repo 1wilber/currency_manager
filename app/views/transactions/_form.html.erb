@@ -11,12 +11,7 @@
       <%= f.input :receiver_id,
               collection:
                 Customer.all.map { |customer| [customer.name, customer.id] },
-              prompt: t("select_customer"),
-              input_html: {
-                data: {
-                  action: "auto-submit#submit",
-                },
-              } %>
+              prompt: :translate %>
 
       <%= f.association :bank_balances,
                     as: :check_boxes,

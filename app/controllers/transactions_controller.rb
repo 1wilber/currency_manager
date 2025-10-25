@@ -90,6 +90,7 @@ class TransactionsController < ApplicationController
       :cost_rate,
       :profit,
       :total,
+      bank_balance_ids: []
     )
   end
 

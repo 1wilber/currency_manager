@@ -1,4 +1,7 @@
 es:
+  errors:
+    messages:
+      not_enough_balance: "Saldo insuficiente"
   transactions_count: "%{count} transacciones registradas"
   add: Agregar
   add_funds: Agregar saldo
@@ -40,6 +43,9 @@ es:
       separator: "."
   activerecord:
     models:
+      bank_balance:
+        one: Saldo Bancario
+        other: Saldos Bancarios
       bank:
         one: Banco
         other: Bancos
@@ -65,6 +71,7 @@ es:
         first_name: Nombre
         last_name: Apellido
       transaction:
+        bank_balances: Saldos Bancarios
         sender_id: Banco
         sender: Banco
         receiver: Cliente

@@ -8,8 +8,11 @@ class Transaction < ApplicationRecord
   belongs_to :receiver, polymorphic: true
   belongs_to :customer
 
+  validate :validate_balance
+  validates :bank_balances, presence: true
 
   before_validation :set_currencies
+  before_validation :set_customer
 
   scope :total, -> { sum(:total) }
   scope :recents, -> { order(id: :desc) }
@@ -17,6 +20,10 @@ class Transaction < ApplicationRecord
   def set_currencies
     self.source_currency ||= sender.try(:currency)
     self.target_currency ||= receiver.try(:currency)
+  end
+
+  def set_customer
+    self.customer ||= receiver
   end
 
   scope :by_range, ->(range) do
@@ -87,6 +94,12 @@ class Transaction < ApplicationRecord
   end
 
   private
+
+  def validate_balance
+    available_balance = bank_balances.sum(:amount)
+
+    errors.add(:base, I18n.t("errors.messages.not_enough_balance")) unless available_balance >= total
+  end
 
   def set_total_and_profit
     calculate_total
