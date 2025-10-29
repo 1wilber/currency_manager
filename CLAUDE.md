@@ -56,6 +56,9 @@ bin/rails db:rollback        # Rollback last migration
 - Uses Money gem for currency handling via `has_currency_fields`
 - Key fields: `amount`, `rate`, `cost_rate`, `profit`, `source_currency`, `target_currency`
 - Scopes: `by_range`, `by_source_currency`, `by_target_currency`, `recents`
+- **Automatic Fund Allocation**: `assign_funds!` method automatically assigns available bank balances to cover transaction total
+- Validates sufficient balance before saving
+- `merged_rates` calculates weighted average rate from multiple bank balances used
 
 **Bank** - Represents financial institutions handling currencies
 - Each bank has a specific `currency` (validated against `config.available_currencies`)
@@ -63,9 +66,20 @@ bin/rails db:rollback        # Rollback last migration
 - Balance calculation: `incomings.sum(:total) - outgoings.sum(:total)`
 - Special method `Bank.ves_default` for VES default bank
 
-**BankBalance** - Tracks bank balance snapshots
+**BankBalance** - Tracks bank balance snapshots with automatic allocation
 - Belongs to a Bank, has many Transactions through `bank_balance_transactions`
-- Calculates remaining balance after transaction allocations
+- Key fields: `amount` (alias: `initial_amount`), `available_amount`, `rate`
+- Uses Money gem for currency handling via `has_currency_fields`
+- Automatically tracks balance consumption through `consume_amount` and `release_amount` methods
+- Scope `with_balance` returns balances with available_amount > 0
+- Generates unique codes: "COM-XXX" format
+- Calculates percentage_used and amount_used from related transactions
+
+**BankBalanceTransaction** - Join model connecting Transactions with BankBalances
+- Belongs to `bank_balance` and `order` (Transaction)
+- Key fields: `amount_used`, `rate_used` (both use Money gem)
+- Automatically updates BankBalance `available_amount` on create/destroy
+- Callbacks handle balance consumption and release
 
 **Customer** - Individuals involved in transactions
 - Uses `name_of_person` gem for name handling
@@ -107,10 +121,10 @@ bin/rails db:rollback        # Rollback last migration
 ### Controllers & Routes
 
 **Main Controllers**:
-- `TransactionsController` - CRUD for transactions, date range filtering
+- `TransactionsController` - CRUD for transactions, date range filtering, includes transaction summary view
 - `BanksController` - Bank listing and details
 - `BankTransactionsController` - Nested transactions under banks
-- `BankBalancesController` - Bank balance snapshots listing
+- `BankBalancesController` - Bank balance snapshots listing with allocation tracking
 - `MetricsController` - Dashboard and reporting
 
 **Authentication**:
@@ -159,9 +173,19 @@ bin/rails db:rollback        # Rollback last migration
 
 **Transaction Calculation Logic**:
 - `total` = `amount * rate`
-- `profit` = `(amount * cost_rate - total) / rate`
+- `cost_total` = `amount * cost_rate`
+- `profit` = `(cost_total - total) / rate`
 - Profit margin = `profit / amount`
-- All calculated automatically via `before_save` callback
+- All calculated automatically via `before_validation` callback
+- `cost_rate` is automatically set from `merged_rates` of assigned bank balances
+
+**Bank Balance Allocation Logic**:
+- Before saving, transactions automatically allocate funds from available bank balances
+- Uses `Bank.ves_default.bank_balances.with_balance` ordered by creation date (FIFO)
+- Distributes transaction total across multiple balances if needed
+- Creates `BankBalanceTransaction` records with `amount_used` and `rate_used`
+- Validates sufficient balance exists before allowing transaction creation
+- `cost_rate` is calculated as weighted average from all allocated balances
 
 **Currency Assignment**:
 - Transactions auto-set `source_currency` from sender, `target_currency` from receiver
@@ -182,3 +206,20 @@ bin/rails db:rollback        # Rollback last migration
 - Flag and icon assets are SVGs in `app/assets/flags/` and `app/assets/icons/`
 - Database uses PostgreSQL with separate schemas for cache, queue, and cable
 - Deployment configured with Kamal and Thruster
+
+## Recent Changes (October 2025)
+
+### Bank Balance System Enhancements
+- Added `available_amount` field to `BankBalance` to track real-time balance availability
+- `initial_amount` is now an alias for `amount`, representing the original balance
+- Added `amount_used` and `rate_used` fields to `BankBalanceTransaction` for precise tracking
+- Implemented automatic fund allocation: transactions now automatically consume from available balances
+- Balance validation ensures transactions cannot exceed available funds
+- FIFO (First In, First Out) strategy for balance allocation
+- Weighted average calculation for `cost_rate` based on multiple balance sources
+- Added callbacks to automatically update `available_amount` when transactions are created/destroyed
+
+### Transaction Summary Feature
+- New summary view for transactions showing aggregated data
+- Partial-based architecture for modular transaction display
+- Integration with bank balance allocation in transaction forms
