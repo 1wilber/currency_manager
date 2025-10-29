@@ -9,10 +9,13 @@ class Transaction < ApplicationRecord
   belongs_to :customer
 
   validate :validate_balance
-  validates :bank_balances, presence: true
+  # validates :bank_balance_transactions, presence: true
 
-  before_validation :set_currencies
-  before_validation :set_customer
+  before_validation :set_currencies,
+                    :set_customer,
+                    :calculate,
+                    :assign_funds!,
+                    :set_cost_rate
 
   scope :total, -> { sum(:total) }
   scope :recents, -> { order(id: :desc) }
@@ -98,22 +101,49 @@ class Transaction < ApplicationRecord
     calculate_profit
   end
 
-  def ensure_bank_balances
-    balances = Bank.ves_default.bank_balances.with_balance
+  def assign_funds!
+    bank_balance_transactions.destroy_all
+    balances = Bank.ves_default.bank_balances.with_balance.order(:created_at)
     balance_needed = total
-    balances.each do |bank_balance|
+    available_balance = balances.sum(:available_amount)
+    puts "Available Balance: #{available_balance}, Balance Needed: #{balance_needed}"
+    return errors.add(:base, I18n.t("errors.messages.not_enough_balance")) unless available_balance >= total
+
+    bank_balance_transactions = balances.map do |bank_balance|
       next if balance_needed <= 0
 
-      balance_needed -= bank_balance.balance
-      bank_balances << bank_balance
+      # Calcular cuánto se puede usar de este balance
+      amount_to_use = [ balance_needed, bank_balance.available_amount ].min
+
+      balance_needed -= amount_to_use
+      # Crear la asociación con amount_used y rate_used
+      self.bank_balance_transactions.build(
+        bank_balance: bank_balance,
+        amount_used: amount_to_use,
+        rate_used: bank_balance.rate
+      )
     end
   end
 
-  private
+  def merged_rates
+    amounts_used = []
+    totals = bank_balance_transactions.map do |bank_balance_transaction|
+      amounts_used << bank_balance_transaction.amount_used
+      bank_balance_transaction.amount_used * bank_balance_transaction.rate_used
+    end
+    return 0.0 if amounts_used.empty?
 
+    totals.sum / amounts_used.sum
+  end
+
+  private
+  def set_cost_rate
+    self.cost_rate = merged_rates
+  end
 
   def validate_balance
-    available_balance = bank_balances.sum(:amount)
+    # Calcular el balance disponible total de los bank_balances asignados
+    available_balance = bank_balance_transactions.sum { |bbt| bbt.amount_used || 0 }
 
     errors.add(:base, I18n.t("errors.messages.not_enough_balance")) unless available_balance >= total
   end

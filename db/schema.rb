@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_15_022546) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_25_214505) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -19,6 +19,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_15_022546) do
     t.bigint "transaction_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "amount_used", default: 0.0
+    t.float "rate_used", default: 0.0
     t.index ["bank_balance_id"], name: "index_bank_balance_transactions_on_bank_balance_id"
     t.index ["transaction_id"], name: "index_bank_balance_transactions_on_transaction_id"
   end
@@ -30,6 +32,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_15_022546) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "available_amount", default: 0.0
     t.index ["bank_id"], name: "index_bank_balances_on_bank_id"
   end
 

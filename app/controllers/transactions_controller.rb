@@ -25,11 +25,13 @@ class TransactionsController < ApplicationController
   def create
     @record = Transaction.new(transaction_params)
 
+
     if @record.save
       respond_to do |format|
-        format.html { redirect_to transactions_path }
+        format.html { redirect_to edit_transaction_path(@record) }
       end
     else
+      @record.reload
       respond_to do |format|
         format.html { render :new, status: :unprocessable_entity }
       end
@@ -39,9 +41,10 @@ class TransactionsController < ApplicationController
   def update
     if @record.update(transaction_params)
       respond_to do |format|
-        format.html { redirect_to transactions_path }
+        format.html { redirect_to edit_transaction_path(@record) }
       end
     else
+      @record.reload
       respond_to do |format|
         format.html { render :edit, status: :unprocessable_entity }
       end
@@ -70,12 +73,6 @@ class TransactionsController < ApplicationController
     respond_to do |format|
       format.json { render json: result }
     end
-  end
-
-  def summary
-    @transaction = Transaction.new(transaction_params)
-    @transaction.calculate
-    @transaction.ensure_bank_balances
   end
 
   def model_class

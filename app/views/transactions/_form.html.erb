@@ -2,7 +2,9 @@
   <div class="card-body bg-base-100">
     <%= render "shared/form_errors", errors: transaction.errors.full_messages %>
 
-    <%= simple_form_for transaction, url: summary_transactions_path, html: {class: "card", data:{turbo_frame: "summary_transaction"}}, method: :get do |f| %>
+    <%= transaction.bank_balance_transactions.inspect %>
+
+    <%= simple_form_for transaction, html: {class: "card", data: {turbo: false}} do |f| %>
       <%= f.input :sender_id,
               collection:
                 [Bank.ves_default].map { |bank| [bank.display_name, bank.id] },
@@ -44,13 +46,12 @@
       </fieldset>
 
       <fieldset class="fieldset">
-        <legend class="fieldset-legend"><%= Transaction.human_attribute_name(:total) %></legend>
+        <legend class="fieldset-legend"><%= Transaction.human_attribute_name(:rate) %></legend>
         <div class="input w-full">
           <%= dollar_sign %>
           <%= f.text_field :rate,
                        value: money_as_value(f.object.rate),
                        class: "grow",
-                       readonly: true,
                        data: {
                          controller: "number-input",
                        } %>
@@ -64,6 +65,9 @@
       <div class="card-actions justify-end mt-4">
         <%= turbo_submit(f) %>
       </div>
+      <% if transaction.bank_balances.present? %>
+        <%= render "summary" %>
+      <% end %>
     <% end %>
 
   </div>

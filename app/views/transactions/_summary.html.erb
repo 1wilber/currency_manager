@@ -1,57 +1,153 @@
-<table class="table table--compact">
-  <tbody>
-    <tr>
-      <th><%= form.object.class.human_attribute_name(:rate) %></th>
-      <td class="text-right">
-        1
-        <%= current_exchange_rate.source %>
+<div class="space-y-6">
+  <!-- Resumen General -->
+  <div class="card bg-base-200">
+    <div class="card-body">
+      <h3 class="card-title text-lg">Resumen de Transacción</h3>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <span class="text-sm opacity-70">Total Enviado</span>
+          <p class="text-xl font-bold"><%= number_to_currency(@record.total, unit: @record.target_currency, precision: 2) %></p>
+        </div>
+        <div>
+          <span class="text-sm opacity-70">Ganancia</span>
+          <p class="text-xl font-bold text-success"><%= number_to_currency(@record.profit, unit: @record.source_currency, precision: 2) %></p>
+        </div>
+        <div>
+          <span class="text-sm opacity-70">Margen de Ganancia</span>
+          <p class="text-lg font-semibold"><%= @record.display_profit_margin %></p>
+        </div>
+        <div>
+          <span class="text-sm opacity-70">Tasa de Transacción</span>
+          <p class="text-lg font-semibold">1
+            <%= @record.source_currency %>
+            =
+            <%= @record.display_rate %>
+            <%= @record.target_currency %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Detalle de Saldos Utilizados -->
+  <div class="card bg-base-100">
+    <div class="card-body">
+      <h3 class="card-title text-lg">Detalle de Saldos Utilizados</h3>
+      <div class="overflow-x-auto">
+        <table class="table table-zebra">
+          <thead>
+            <tr>
+              <th>Código Saldo</th>
+              <th>Tasa Usada</th>
+              <th>Monto Usado (<%= @record.target_currency %>)</th>
+              <th>Monto Equivalente (<%= @record.source_currency %>)</th>
+              <th>Saldo Restante</th>
+              <th>% Usado del Saldo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @record.bank_balance_transactions.includes(:bank_balance).each do |bbt| %>
+              <% bank_balance = bbt.bank_balance %>
+              <% amount_in_source = bbt.amount_used / @record.rate %>
+              <% percentage_of_balance =
+                (
+                  if bank_balance.initial_amount > 0
+                    (bbt.amount_used / bank_balance.initial_amount * 100).round(2)
+                  else
+                    0
+                  end
+                ) %>
+              <tr>
+                <td>
+                  <span class="font-mono font-semibold"><%= bank_balance.code %></span>
+                </td>
+                <td>
+                  <span class="badge badge-outline">
+                    1
+                    <%= @record.source_currency %>
+                    =
+                    <%= number_with_precision(bbt.rate_used, precision: 4) %>
+                    <%= @record.target_currency %>
+                  </span>
+                </td>
+                <td>
+                  <span class="font-semibold"><%= number_to_currency(bbt.amount_used, unit: @record.target_currency, precision: 2) %></span>
+                </td>
+                <td>
+                  <span class="font-semibold"><%= number_to_currency(
+                      amount_in_source,
+                      unit: @record.source_currency,
+                      precision: 2,
+                    ) %></span>
+                </td>
+                <td>
+                  <span
+                    class="<%= bank_balance.available_amount > 0 ? 'text-success' : 'text-error' %>"
+                  >
+                    <%= number_to_currency(
+                      bank_balance.available_amount,
+                      unit: @record.target_currency,
+                      precision: 2,
+                    ) %>
+                  </span>
+                </td>
+                <td>
+                  <div class="flex items-center gap-2">
+                    <progress
+                      class="progress progress-primary w-20"
+                      value="<%= percentage_of_balance %>"
+                      max="100"
+                    ></progress>
+                    <span class="font-semibold"><%= percentage_of_balance %>%</span>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+          <tfoot>
+            <tr class="font-bold">
+              <td colspan="2" class="text-right">TOTAL:</td>
+              <td>
+                <%= number_to_currency(
+                  @record.bank_balance_transactions.sum(:amount_used),
+                  unit: @record.target_currency,
+                  precision: 2,
+                ) %>
+              </td>
+              <td>
+                <%= number_to_currency(@record.amount, unit: @record.source_currency, precision: 2) %>
+              </td>
+              <td colspan="2"></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- Información Adicional -->
+  <div class="stats shadow w-full">
+    <div class="stat">
+      <div class="stat-title">Saldos Utilizados</div>
+      <div class="stat-value text-2xl"><%= @record.bank_balance_transactions.count %></div>
+      <div class="stat-desc">En esta transacción</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-title">Tasa de Costo</div>
+      <div class="stat-value text-2xl"><%= @record.display_cost_rate %></div>
+      <div class="stat-desc">1
+        <%= @record.source_currency %>
         =
-        <%= form.text_field :rate,
-                        value: money_as_value(form.object.rate),
-                        class: "input input--underline text-right",
-                        data: {
-                          transaction_form_target: "rate",
-                          controller: "number-input",
-                          action: "transaction-form#calculate",
-                        } %>
-        <%= current_exchange_rate.target %>
+        <%= @record.display_cost_rate %>
+        <%= @record.target_currency %></div>
+    </div>
 
-      </td>
-    </tr>
-
-    <tr>
-      <th><%= form.object.class.human_attribute_name(:cost_rate) %></th>
-      <td class="text-right">
-        1
-        <%= current_exchange_rate.source %>
-        =
-        <%= form.text_field :cost_rate,
-                        value: money_as_value(form.object.cost_rate),
-                        class: "input input--underline text-right",
-                        data: {
-                          transaction_form_target: "costRate",
-                          controller: "number-input",
-                          action: "transaction-form#calculate",
-                        } %>
-        <%= current_exchange_rate.target %>
-      </td>
-    </tr>
-
-    <tr>
-      <th><%= Transaction.human_attribute_name(:profit) %></th>
-      <td class="text-right">
-
-        <%= form.text_field :profit,
-                        value: money_as_value(form.object.profit),
-                        class: "input input--underline text-right",
-                        readonly: true,
-                        data: {
-                          transaction_form_target: "profit",
-                          controller: "number-input",
-                        } %>
-
-        <%= current_exchange_rate.source %>
-      </td>
-    </tr>
-  </tbody>
-</table>
+    <div class="stat">
+      <div class="stat-title">Diferencia de Tasa</div>
+      <div
+        class="stat-value text-2xl text-<%= @record.rate > @record.cost_rate ? 'success' : 'error' %>"
+      >
+        <%= number_with_precision((@record.rate - @record.cost_rate), precision: 4) %>
+      </div>
+      <div class="stat-desc">Tasa venta - Tasa costo</div>
+    </div>
+  </div>
+</div>
