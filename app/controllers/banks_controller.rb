@@ -6,8 +6,9 @@ before_action :set_bank, only: [ :show ]
   end
 
   def show
-    @transactions = @bank.incomings.recents.where(source_currency: current_exchange_rate.source, target_currency: current_exchange_rate.target).limit(10)
-    @total_profit = @transactions.sum(:profit)
+    transactions_scope = @bank.incomings.recents.where(source_currency: current_exchange_rate.source, target_currency: current_exchange_rate.target).limit(10)
+    @total_profit = transactions_scope.sum(:profit)
+    @transactions = transactions_scope.decorate
   end
 
   private

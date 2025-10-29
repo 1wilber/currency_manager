@@ -12,14 +12,15 @@ class TransactionsController < ApplicationController
     params[:by_source_currency] ||= current_exchange_rate.source
     params[:by_target_currency] ||= current_exchange_rate.target
 
-    @collection = apply_scopes(Transaction.preload(:sender, :receiver)).by_range(@date_range).order(id: :desc)
-    @total_amount = Money.new(@collection.sum(:amount), current_exchange_rate.source).format(symbol: "$")
-    @total_profit = Money.new(@collection.sum(:profit), current_exchange_rate.source).format(symbol: "$")
-    @total = Money.new(@collection.sum(:total), current_exchange_rate.target).format(symbol: "$")
+    transactions_scope = apply_scopes(Transaction.preload(:sender, :receiver)).by_range(@date_range).order(id: :desc)
+    @total_amount = Money.new(transactions_scope.sum(:amount), current_exchange_rate.source).format(symbol: "$")
+    @total_profit = Money.new(transactions_scope.sum(:profit), current_exchange_rate.source).format(symbol: "$")
+    @total = Money.new(transactions_scope.sum(:total), current_exchange_rate.target).format(symbol: "$")
+    @collection = transactions_scope.decorate
   end
 
   def new
-    @record = model_class.new
+    @record = model_class.new.decorate
   end
 
   def create
@@ -100,7 +101,7 @@ class TransactionsController < ApplicationController
 
   def set_record
     @record = if [ :edit, :update ].include?(action_name.to_sym)
-      model_class.find(params[:id])
+      model_class.find(params[:id]).decorate
     else
       @last_transaction = model_class.last
       if @last_transaction.present?
@@ -110,7 +111,7 @@ class TransactionsController < ApplicationController
           rate: @last_transaction.rate,
           cost_rate: @last_transaction.cost_rate,
           source_currency: @last_transaction.source_currency,
-        )
+        ).decorate
       end
     end
   end
