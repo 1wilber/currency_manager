@@ -67,7 +67,7 @@ gem "pundit", "~> 2.5"
 
 gem "interactor-rails", "~> 2.3"
 
-gem "roo", "~> 2.10"
+gem "roo", "~> 3.0"
 
 gem "has_scope", "~> 0.8.2"
 
